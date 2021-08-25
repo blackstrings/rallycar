@@ -48,7 +48,7 @@ public class SteerWheel : MonoBehaviour
    
     }
 
-    public Vector3 getRotation()
+    public float getRotation()
     {
         // due to setup we need a conversion
         Vector3 rot = transform.localRotation.eulerAngles;
@@ -75,7 +75,7 @@ public class SteerWheel : MonoBehaviour
         }
        
 
-        Debug.Log(arr[index]);
-        return rot;
+        //Debug.Log(arr[index]);
+        return arr[index];
     }
 }
