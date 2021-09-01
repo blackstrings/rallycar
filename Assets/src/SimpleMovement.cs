@@ -40,6 +40,7 @@ public class SimpleMovement : MonoBehaviour
 
 
 			// or hard turn
+			//float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 			//transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 
 			charCtrl.Move(direction * walkSpeed * Time.deltaTime);

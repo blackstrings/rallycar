@@ -1,0 +1,26 @@
+﻿{
+  "actionsQueues": [
+    {
+      "name": "Rachet Spike",
+      "actionDesc": "aoe",
+      "faceDirection": [ -1, 0, 0 ],
+      "castPosition": [ 0, 0, 0 ],
+      "castDelay": 2,
+      "castTime": 6,
+      "castAnimationTime": 2,
+      "positionSpeed": 0,
+      "casterPosition": [ 0, 0, 0 ]
+    },
+    {
+      "name": "Tsunami Gas",
+      "actionDesc": "aoe",
+      "faceDirection": [ 0, 1, 0 ],
+      "castPosition": [ 0, 0, 0 ],
+      "castDelay": 2,
+      "castTime": 5,
+      "castAnimationTime": 3,
+      "positionSpeed": 0,
+      "casterPosition": [ 0, 0, 0 ]
+    }
+  ]
+}
