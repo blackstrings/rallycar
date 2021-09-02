@@ -18,10 +18,7 @@ public class ActionQueue
 	public float castAnimationTime = 5f;
 
 	public float positionSpeed = 5f;
-	public float[] position;
-	//public float posX = 0f;
-	//public float posY = 0f;
-	//public float posZ = 0f;
+	public float[] castPosition;
 
 	// face the user in the direciton
 	public float[] faceDirection;
@@ -30,7 +27,7 @@ public class ActionQueue
 	//public float faceZ = 0f;
 
 	public Vector3 getPosition() {
-		return new Vector3(position[0], position[1], position[2]);
+		return new Vector3(castPosition[0], castPosition[1], castPosition[2]);
 	}
 
 	public Vector3 getFacingDirection() {

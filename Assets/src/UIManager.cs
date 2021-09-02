@@ -12,13 +12,20 @@ public class UIManager : MonoBehaviour
 		if(!bossCastBar) {
 			throw new UnityException("bossCastBar null");
 		}
+		EventManager.onBossUpcomingActionAlert += displayBossActionName;
+		EventManager.onBossActionCastingAlert += playBossCastBar;
 	}
 
-	public void displayBossActionName(string name) {
-		bossActionNameTxt.text = name;
+	private void OnDestroy() {
+		EventManager.onBossUpcomingActionAlert -= displayBossActionName;
+		EventManager.onBossUpcomingActionAlert -= playBossCastBar;
 	}
 
-	public void handleBossAction(ActionQueue action) {
+	public void displayBossActionName(ActionQueue action) {
+		bossActionNameTxt.text = action.name;
+	}
+
+	public void playBossCastBar(ActionQueue action) {
 		bossCastBar.restart(action.castTime);
 	}
 

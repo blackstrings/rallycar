@@ -7,6 +7,8 @@ public class GameManager : Singleton<GameManager>
 {
 
 	public UIManager uiManager;
+	public EventManager eventManager;
+
 	public int mainPlayerId;
 
 	public List<Player> players = new List<Player>();
@@ -14,11 +16,12 @@ public class GameManager : Singleton<GameManager>
     // (Optional) Prevent non-singleton constructor use.
     protected GameManager() { }
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
-       
-    }
+		if(!uiManager) { throw new UnityException("uIManager null"); }
+		if(!eventManager) { throw new UnityException("eventManager null"); }
+	}
 
 	public void Reset() {
 		players.Clear();
@@ -28,12 +31,5 @@ public class GameManager : Singleton<GameManager>
 
 	}
 
-	public void UIDisplayBossUpcomingAction(string name) {
-		uiManager.displayBossActionName(name);
-	}
-
-	public void displayBossActionUI(ActionQueue action) {
-		uiManager.handleBossAction(action);
-	}
 
 }
