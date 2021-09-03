@@ -22,9 +22,6 @@ public class ActionQueue
 
 	// face the user in the direciton
 	public float[] faceDirection;
-	//public float faceX = 0f;
-	//public float faceY = 1f;
-	//public float faceZ = 0f;
 
 	public Vector3 getPosition() {
 		return new Vector3(castPosition[0], castPosition[1], castPosition[2]);
