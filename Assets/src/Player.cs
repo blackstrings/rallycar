@@ -14,21 +14,43 @@ public class Player : MonoBehaviour
 	private ActionQueueLoader actionLoader;
 	private List<ActionQueue> actionQueues;
 
+	public float aiTurnSmoothTime = .1f;
+	private float aiTurnSmoothVelocity = .05f;
+
 	// gets cleared after action is done moving
 	private ActionQueue playerAction;
 
+	void Awake() {
+		if(isAI) {
+			SetupAI();
+		}
+	}
 
 	// Start is called before the first frame update
 	void Start()
     {
-		if(isAI) {
-			setupPlayerAI();
-		}
 	}
 
-	private void setupPlayerAI() {
-		EventManager.onBossUpcomingActionAlert += handleBossUpcomingAction;
-		// load json from referenced text file
+	public void Reset() {
+		
+	}
+
+	/// <summary>
+	/// Load in the positional actions this player should be taking as boss calls out actions.
+	/// A network loader should be doing this.
+	/// </summary>
+	/// <param name="actions"></param>
+	public void LoadActions(List<ActionQueue> actions) {
+		this.actionQueues = actions;
+	}
+
+	/// <summary>
+	/// Only when the player is an AI
+	/// </summary>
+	private void SetupAI() {
+		// listen to boss action alert
+		EventManager.onBossUpcomingActionAlert += positionPlayerViaAI;
+		// load scripted json from referenced text file
 		actionLoader = JsonUtility.FromJson<ActionQueueLoader>(playerActionRespondJson.text);
 		// get the actions from the loader class
 		ActionQueue[] actions = actionLoader.actionsQueues;
@@ -37,23 +59,15 @@ public class Player : MonoBehaviour
 	}
 
 	private void OnDestroy() {
-		EventManager.onBossUpcomingActionAlert -= handleBossUpcomingAction;
+		EventManager.onBossUpcomingActionAlert -= positionPlayerViaAI;
 	}
 
-	// Update is called once per frame
-	void Update() {
-	}
-
-
-	public void Reset() {
-	}
-
-	public void handleBossUpcomingAction(ActionQueue action) {
+	public void positionPlayerViaAI(ActionQueue bossAction) {
 		// match boss action name as a map to get the action location to take
 		playerAction = null;
 
 		for(int i=0; i<actionQueues.Count; i++) {
-			if(actionQueues[i].name.Equals(action.name)) {
+			if(actionQueues[i].id == bossAction.id) {
 				playerAction = actionQueues[i];
 				break;
 			}
@@ -61,9 +75,7 @@ public class Player : MonoBehaviour
 
 		// tele and go to position and face
 		if(playerAction != null) {
-			//transform.position = playerAction.getPosition();
-			//faceDirection(playerAction.getFacingDirection());
-			moveTo(action.getPosition());
+			moveTo(playerAction.getPosition());
 		} else {
 			throw new UnityException("player action not found for player " + id);
 		}
@@ -79,10 +91,10 @@ public class Player : MonoBehaviour
 		StartCoroutine(MoveOverSeconds (newPosition, 2f));
 	}
   
-  	private IEnumerator MoveOverSpeed(GameObject objectToMove, Vector3 end, float speed) {
+  	private IEnumerator MoveOverSpeed(Vector3 end, float speed) {
 		// speed should be 1 unit per second
-		while (objectToMove.transform.position != end) {
-			objectToMove.transform.position = Vector3.MoveTowards(objectToMove.transform.position, end, speed * Time.deltaTime);
+		while (transform.position != end) {
+			transform.position = Vector3.MoveTowards(transform.position, end, speed * Time.deltaTime);
 			yield return new WaitForEndOfFrame();
 		}
 	}
@@ -92,10 +104,22 @@ public class Player : MonoBehaviour
 		Vector3 startingPos = transform.position;
 		while (elapsedTime < seconds) {
 			transform.position = Vector3.Lerp(startingPos, end, (elapsedTime / seconds));
+			faceDirectionOfTravel(end-startingPos);
 			elapsedTime += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 		transform.position = end;
+		// hard set the players facing direction upon reaching location
 		faceDirection(playerAction.getFacingDirection());
+	}
+
+	private void faceDirectionOfTravel(Vector3 direction) {
+		direction = direction.normalized;
+		float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+		// smooth turn
+		float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref aiTurnSmoothVelocity, aiTurnSmoothTime);
+		transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
 	}
 }

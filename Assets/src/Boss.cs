@@ -10,33 +10,62 @@ public class Boss : MonoBehaviour
 
 	// not the best way to load, as you can't change once at runtime
 	// but for now it'll do, as we'll want to load using www from dataserver
-	public TextAsset bossActionJson;
-	private ActionQueueLoader actionLoader;
+	/// <summary>
+	/// If no boss script is loaded, use the default e9s boss script
+	/// </summary>
+	public TextAsset defaultBossScript;
 	private List<ActionQueue> actionQueues;
 
 	// prevent starting more than once
-	private bool canInitiate = false;
-	public bool canPlayAction = true;
+	public bool canPlayNextAction = true;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
-		// load json from referenced text file
-		actionLoader = JsonUtility.FromJson<ActionQueueLoader>(bossActionJson.text);
-		// get the actions from the loader class
-		ActionQueue[] actions = actionLoader.actionsQueues;
-		// convert array to list for easier use
-		actionQueues = new List<ActionQueue>(actions);
-		canInitiate = true;
+	
     }
 
-	// Update is called once per frame
-	void Update() {
-		if(Input.GetKeyUp(KeyCode.Space)) {
-			if (canInitiate) {
-				canInitiate = false;
-				beginFight();
-			}
+	/// <summary>
+	/// Begins the round. Called by the sceneManager.
+	/// </summary>
+	public void StartRound(List<ActionQueue> actionQueues) {
+		LoadBossActions(actionQueues);
+		if(validate()) {
+			StartCoroutine(playActions());
+		} else {
+			Debug.LogError("Fail to StartRound, validate failed as Boss has no actions loaded");
+		}
+	}
+
+	private bool validate() {
+		if(actionQueues.Count > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	/// <summary>
+	/// Boss should be fed a boss script data from the network. If not, it will use the default script.
+	/// </summary>
+	private void LoadBossActions(List<ActionQueue> actionQueues) {
+		if(actionQueues == null) {
+			Debug.Log("No script was loaded, loading default boss action");
+			SetUpAI();
+		} else {
+			this.actionQueues = actionQueues;
+		}
+	}
+
+	private void SetUpAI() {
+		if(defaultBossScript) {
+			// load json from referenced text file
+			ActionQueueLoader actionLoader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
+			// get the actions from the loader class
+			ActionQueue[] actions = actionLoader.actionsQueues;
+			// convert array to list for easier use
+			actionQueues = new List<ActionQueue>(actions);
+		} else {
+			throw new UnityException("defaultBossScript null when needed");
 		}
 	}
 
@@ -50,23 +79,18 @@ public class Boss : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 	}
 
-	/// <summary>
-	/// Begins the round.
-	/// </summary>
-	private void beginFight() {
-		StartCoroutine(playActions());
-	}
-
 	IEnumerator playActions() {
-		while(canPlayAction) {
+		while(canPlayNextAction) {
 			//if the action exist
 			if(actionQueues.Count > 0) {
+
+				// very short delay to put bandaid over loading default
+				yield return new WaitForSeconds(2);
 
 				// get and pop the action out
 				ActionQueue action = actionQueues[0];
 				Debug.Log("now starting action " + action.name);
 				GameManager.Instance.eventManager.alertBossUpcomingAction(action);
-				//GameManager.Instance.UIDisplayBossUpcomingAction(action.name);
 				actionQueues.RemoveAt(0);
 
 				// delay the action
@@ -86,8 +110,8 @@ public class Boss : MonoBehaviour
 
 
 			} else {
-				Debug.Log("End of boss Actions");
-				canPlayAction = false;
+				Debug.Log("End of boss fight");
+				canPlayNextAction = false;
 				StopCoroutine(playActions());
 			}
 		}

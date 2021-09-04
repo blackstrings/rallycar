@@ -1,14 +1,14 @@
 ﻿{
   "actionsQueues": [
     {
-      "name": "Rachet Spike",
-      "faceDirection": [-1, 0, 0 ],
-      "castPosition": [ 10, 0, 0 ]
+        "id":  1,
+        "faceDirection": [ 1, 0, 0 ],
+        "castPosition": [ 10, 0, 0 ]
     },
     {
-      "name": "Tsunami Gas",
-      "faceDirection": [ 1, 0, 0 ],
-      "castPosition": [ -10, 0, 0 ]
+        "id":  2,
+        "faceDirection": [ 1, 0, 0 ],
+        "castPosition": [ -10, 0, 0 ]
     }
   ]
 }

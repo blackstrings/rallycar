@@ -5,8 +5,8 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
 
-	public delegate void OnBossActionAlert(ActionQueue actionQueue);
-	public static event OnBossActionAlert onBossUpcomingActionAlert;
+	public delegate void OnBossUpcomingActionAlert(ActionQueue actionQueue);
+	public static event OnBossUpcomingActionAlert onBossUpcomingActionAlert;
 
 	public delegate void OnBossActionAlertCasting(ActionQueue actionQueue);
 	public static event OnBossActionAlertCasting onBossActionCastingAlert;

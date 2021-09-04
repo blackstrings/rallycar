@@ -7,6 +7,7 @@ using UnityEngine;
 [Serializable]
 public class ActionQueue
 {
+	public int id;
 	public string name = "action no name";
 
 	// to see the name of the action aoe, tank buster,
