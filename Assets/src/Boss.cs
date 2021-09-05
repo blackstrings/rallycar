@@ -16,6 +16,9 @@ public class Boss : MonoBehaviour
 	public TextAsset defaultBossScript;
 	private List<ActionQueue> actionQueues;
 
+	// keep it at 1 for normal speed, increment betwee 2-6 to speed up fight
+	public float debugSpeedUpCast = 1;
+
 	// prevent starting more than once
 	public bool canPlayNextAction = true;
 
@@ -95,7 +98,7 @@ public class Boss : MonoBehaviour
 
 				// delay the action
 				//Debug.Log("delay time for action " + action.castDelay);
-				yield return new WaitForSeconds(action.castDelay);
+				yield return new WaitForSeconds(action.castDelay / debugSpeedUpCast);
 
 				// start casting
 				//Debug.Log("starting casting action");
@@ -106,7 +109,7 @@ public class Boss : MonoBehaviour
 				// give time for the animation
 				Debug.Log("playing boss animation action" + action.name);
 				// perform the action todo
-				yield return new WaitForSeconds(action.castAnimationTime);
+				yield return new WaitForSeconds(action.castAnimationTime / debugSpeedUpCast);
 
 
 			} else {
