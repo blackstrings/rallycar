@@ -2,13 +2,23 @@
   "actionsQueues": [
     {
         "id":  1,
-        "faceDirection": [ 1, 0, 0 ],
-        "castPosition": [ 10, 0, 0 ]
+        "faceDirectionAuto": "boss",
+        "goToPosition": [ 10, 0, 0 ]
     },
     {
-        "id":  2,
-        "faceDirection": [ 1, 0, 0 ],
-        "castPosition": [ -10, 0, 0 ]
+        "id": 2,
+        "faceDiretionAuto": "boss",
+        "goToPosition": [ -10, 0, 0 ]
+    },
+    {
+        "id": 3,
+        "faceDirectionAuto": "away",
+        "goToPosition": [ 0, 0, 10 ]
+    },
+    {
+        "id": 100,
+        "faceDirectionAuto": "away",
+        "goToPosition": [ 0, 0, -10 ]
     }
   ]
 }

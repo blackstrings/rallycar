@@ -1,28 +1,52 @@
 ﻿{
-  "actionsQueues": [
-    {
-        "id":  1,
-        "name": "Rachet Spike",
-        "actionDesc": "aoe",
-        "faceDirection": [ -1, 0, 0 ],
-        "castPosition": [ 0, 0, 0 ],
-        "castDelay": 2,
-        "castTime": 6,
-        "castAnimationTime": 2,
-        "positionSpeed": 0,
-        "casterPosition": [ 0, 0, 0 ]
-    },
-    {
-        "id":  2,
-        "name": "Tsunami Gas",
-        "actionDesc": "aoe",
-        "faceDirection": [ 0, 1, 0 ],
-        "castPosition": [ 0, 0, 0 ],
-        "castDelay": 2,
-        "castTime": 5,
-        "castAnimationTime": 3,
-        "positionSpeed": 0,
-        "casterPosition": [ 0, 0, 0 ]
-    }
-  ]
+    "actionsQueues": [
+        {
+            "actionsQueues": [],
+            "id": 1,
+            "name": "Ground Razing Particle",
+            "actionDesc": "Raid AOE",
+            "faceDirection": [ -1, 0, 0 ],
+            "goToPosition": [ 0, 0, 0 ],
+            "goToSpeed": 0,
+            "castDelay": 16,
+            "castTime": 3,
+            "castAnimationTime": 10
+        },
+        {
+            "actionsQueues": [],
+            "id": 2,
+            "name": "Art of Darkness - Spread",
+            "actionDesc": "aoe",
+            "faceDirection": [ 0, 0, 1 ],
+            "goToPosition": [ 0, 0, 0 ],
+            "goToSpeed": 0,
+            "castDelay": 5,
+            "castTime": 5,
+            "castAnimationTime": 5
+        },
+        {
+            "actionsQueues": [],
+            "id": 3,
+            "name": "Art of Darkness - Stack",
+            "actionDesc": "aoe",
+            "faceDirection": [ 0, 0, 1 ],
+            "goToPosition": [ 0, 0, 0 ],
+            "goToSpeed": 0,
+            "castDelay": 5,
+            "castTime": 5,
+            "castAnimationTime": 5
+        },
+        {
+            "actionsQueues": [],
+            "id": 100,
+            "name": "Level Complete!",
+            "actionDesc": "Level Complete!",
+            "faceDirection": [ 0, 0, 1],
+            "goToPosition": [ 0, 0, 0 ],
+            "goToSpeed": 0,
+            "castDelay": 5,
+            "castTime": 5,
+            "castAnimationTime": 3
+        }
+    ]
 }

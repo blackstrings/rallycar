@@ -9,25 +9,27 @@ public class ActionQueue
 {
 	public int id;
 	public string name = "action no name";
-
-	// to see the name of the action aoe, tank buster,
 	public string actionDesc = "no description";
-
-
-	public float castDelay = 5f;
-	public float castTime = 5f;
-	public float castAnimationTime = 5f;
+	public float castDelay = 2f;
+	public float castTime = 2f;
+	public float castAnimationTime = 2f;
 
 	public float positionSpeed = 5f;
-	public float[] castPosition;
+	public float[] goToPosition;
+	public float goToSpeed;
 
 	// face the user in the direciton
 	public float[] faceDirection;
+	public string faceDirectionAuto;
 
-	public Vector3 getPosition() {
-		return new Vector3(castPosition[0], castPosition[1], castPosition[2]);
+	public Vector3 getGoToPosition() {
+		return new Vector3(goToPosition[0], goToPosition[1], goToPosition[2]);
 	}
 
+	/// <summary>
+    /// Direction to face once at position
+    /// </summary>
+    /// <returns></returns>
 	public Vector3 getFacingDirection() {
 		return new Vector3(faceDirection[0], faceDirection[1], faceDirection[2]);
 	}
