@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelInfo
 {
+	public string name;
 	public int numOfPlayers;
 
 	// to know which player is the main player

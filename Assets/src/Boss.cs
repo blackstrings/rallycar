@@ -93,7 +93,7 @@ public class Boss : MonoBehaviour
 				// get and pop the action out
 				ActionQueue action = actionQueues[0];
 				Debug.Log("now starting action " + action.name);
-				GameManager.Instance.eventManager.alertBossUpcomingAction(action);
+				EventManager.alertBossUpcomingAction(action);
 				actionQueues.RemoveAt(0);
 
 				// delay the action
@@ -103,7 +103,7 @@ public class Boss : MonoBehaviour
 				// start casting
 				//Debug.Log("starting casting action");
 				faceDirection(action.getFacingDirection());
-				GameManager.Instance.eventManager.alertBossActionCasting(action);
+				EventManager.alertBossActionCasting(action);
 				yield return new WaitForSeconds(action.castTime);
 
 				// give time for the animation

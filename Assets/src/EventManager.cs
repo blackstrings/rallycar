@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EventManager : MonoBehaviour
+public static class EventManager
 {
 
 	public delegate void OnBossUpcomingActionAlert(ActionQueue actionQueue);
@@ -12,16 +8,16 @@ public class EventManager : MonoBehaviour
 	public static event OnBossActionAlertCasting onBossActionCastingAlert;
 
 	// boss next action alert
-	public void alertBossUpcomingAction(ActionQueue actionQueue) {
+	public static void alertBossUpcomingAction(ActionQueue actionQueue) {
 		onBossUpcomingActionAlert(actionQueue);
 	}
 
 	// boss casting
-	public void alertBossActionCasting(ActionQueue actionQueue) {
+	public static void alertBossActionCasting(ActionQueue actionQueue) {
 		if(actionQueue != null) {
 			onBossActionCastingAlert(actionQueue);
 		} else {
-			throw new UnityException("actionQueue null");
+			
 		}
 	}
 }

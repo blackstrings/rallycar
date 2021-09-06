@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 	// gets cleared after action is done moving
 	private ActionQueue playerAction;
 
-	// should be found at runtime dynamically with tag "boss"
+	// to be populated at runtime
 	private GameObject bossGO;
 	private ClassType classType;
 
@@ -88,30 +88,32 @@ public class Player : MonoBehaviour
 	public void positionPlayerViaAI(ActionQueue bossAction) {
 		// match boss action name as a map to get the action location to take
 		playerAction = null;
-
-		// if there is currPos still available, teleport here quickly before
-		// moving forward to the next destination
-		if(currPos != Vector3.zero)
-        {
-			transform.position = currPos;
-			stopPrevMoveTo();
-			//reset back to zero
-			currPos = Vector3.zero;
-        }
-
-		for(int i=0; i<actionQueues.Count; i++) {
-			if(actionQueues[i].id == bossAction.id) {
-				playerAction = actionQueues[i];
-				break;
+		if(bossAction != null) {
+			// if there is currPos still available, teleport here quickly before
+			// moving forward to the next destination
+			if (currPos != Vector3.zero) {
+				transform.position = currPos;
+				stopPrevMoveTo();
+				//reset back to zero
+				currPos = Vector3.zero;
 			}
-		}
 
-		// tele and go to position and face
-		if(playerAction != null) {
-			currPos = playerAction.getGoToPosition();
-			moveTo(currPos);
+			for (int i = 0; i < actionQueues.Count; i++) {
+				if (actionQueues[i].id == bossAction.id) {
+					playerAction = actionQueues[i];
+					break;
+				}
+			}
+
+			// tele and go to position and face
+			if (playerAction != null) {
+				currPos = playerAction.getGoToPosition();
+				moveTo(currPos, playerAction.faceDirectionAuto);
+			} else {
+				Debug.LogError("player action not found for player " + id);
+			}
 		} else {
-			Debug.LogError("player action not found for player " + id);
+			Debug.LogError("player " + id + " failed to move, bossAction null");
 		}
 	}
 
@@ -126,8 +128,8 @@ public class Player : MonoBehaviour
 		StopCoroutine("MoveOverSeconds");
     }
 
-	private void moveTo(Vector3 newPosition) {
-		StartCoroutine(MoveOverSeconds (newPosition, 2f));
+	private void moveTo(Vector3 newPosition, string faceDirectionAuto) {
+		StartCoroutine(MoveOverSeconds (newPosition, 2f, faceDirectionAuto));
 	}
   
   	/*private IEnumerator MoveOverSpeed(Vector3 end, float speed) {
@@ -139,7 +141,7 @@ public class Player : MonoBehaviour
 	}
 	*/
 
-	private IEnumerator MoveOverSeconds(Vector3 end, float seconds) {
+	private IEnumerator MoveOverSeconds(Vector3 end, float seconds, string faceDirectionAuto) {
 		float elapsedTime = 0;
 		Vector3 startingPos = transform.position;
 		while (elapsedTime < seconds) {
@@ -151,25 +153,21 @@ public class Player : MonoBehaviour
 		transform.position = end;
 
 		// hard set the players facing direction upon reaching location
-		string faceDirAuto = playerAction.faceDirectionAuto;
-		if(faceDirAuto != null)
+		if(faceDirectionAuto != null)
         {
-			if (faceDirAuto.Equals("boss"))
+			if (faceDirectionAuto.Equals("boss"))
 			{
 				Vector3 bossPos = bossGO.transform.position;
 				bossPos.y = 0;  // y should be zero
 				end.y = 0;
 				faceDirection(bossPos - end);
-			} else if(faceDirAuto.Equals("away"))
+			} else if(faceDirectionAuto.Equals("away"))
 			{
 				Vector3 bossPos = bossGO.transform.position;
 				bossPos.y = 0;  // y should be zero
 				end.y = 0;
 				faceDirection(end - bossPos);
 			}
-        } else
-        {
-			Debug.LogError("plpayer " + id + " faceDirAuto not set");
         }
 	}
 

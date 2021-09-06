@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-	public EventManager eventManager;
-
 	public int mainPlayerId;
-	private LevelInfo savedLevelInfo;
+	public LevelInfo savedLevelInfo = new LevelInfo();
+
 
     // (Optional) Prevent non-singleton constructor use.
     protected GameManager() { }
@@ -16,11 +15,11 @@ public class GameManager : Singleton<GameManager>
 	// Start is called before the first frame update
 	void Start()
     {
-		if(!eventManager) { throw new UnityException("eventManager null"); }
+		//DontDestroyOnLoad(this.gameObject);
 	}
 
 	// save data for upcoming level on start
-	public void saveLevelInfo() {
+	public void initSelectedLevel() {
 
 	}
 
