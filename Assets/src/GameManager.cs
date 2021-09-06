@@ -5,13 +5,10 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-
-	public UIManager uiManager;
 	public EventManager eventManager;
 
 	public int mainPlayerId;
-
-	public List<Player> players = new List<Player>();
+	private LevelInfo savedLevelInfo;
 
     // (Optional) Prevent non-singleton constructor use.
     protected GameManager() { }
@@ -19,15 +16,11 @@ public class GameManager : Singleton<GameManager>
 	// Start is called before the first frame update
 	void Start()
     {
-		if(!uiManager) { throw new UnityException("uIManager null"); }
 		if(!eventManager) { throw new UnityException("eventManager null"); }
 	}
 
-	public void Reset() {
-		players.Clear();
-		players.ForEach(p => {
-			p.Reset();
-		});
+	// save data for upcoming level on start
+	public void saveLevelInfo() {
 
 	}
 

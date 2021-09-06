@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
 
 	// should be found at runtime dynamically with tag "boss"
 	private GameObject bossGO;
+	private ClassType classType;
 
 	void Awake() {
 		if(isAI) {
@@ -42,6 +43,15 @@ public class Player : MonoBehaviour
         {
 			throw new UnityException("player " + id + " can't find boss gameobject");
         }
+	}
+
+	// define the player stats
+	void load(ClassType classType, int id) {
+		if(!(classType.ToString().Equals(""))){
+			this.classType = classType;
+		} else {
+			throw new UnityException("load failed, classType not supported");
+		}
 	}
 
 	public void Reset() {

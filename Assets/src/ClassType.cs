@@ -1,0 +1,1 @@
+public enum ClassType { HEALER = 0, TANK = 1, DPS = 2}
