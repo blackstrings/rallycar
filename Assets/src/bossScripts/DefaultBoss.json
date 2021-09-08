@@ -49,21 +49,21 @@
             "castAnimationTime": 3
         }
     ],
-    "scriptOrder": [
+    "actionPhases": [
         {
-            "phase": "start",
-            "actions": [
+            "name": "start",
+            "actionOrderIds": [
                 [ 1 ],
-                [ 2, 3 ],
-                [ 4 ]
+                [ 3 ],
+                [ 100 ]
             ]
         },
         {
-            "phase": "brambels",
-            "actions": [
+            "name": "brambels",
+            "actionOrderIds": [
                 [ 1 ],
-                [ 2, 3 ],
-                [ 4 ]
+                [ 1 ],
+                [ 2 ]
             ]
         }
 

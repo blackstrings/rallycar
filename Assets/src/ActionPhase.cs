@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 
 /// <summary>
@@ -8,8 +6,7 @@ using System;
 /// actionQueues
 /// </summary>
 [Serializable]
-public class ActionQueueLoader
-{
-	public ActionQueue[] actionsQueues;
-	public ActionPhase[] actionPhases;
+public class ActionPhase {
+	public string name;
+	public List<int> actionOrderIds;
 }
