@@ -14,7 +14,9 @@ public class Boss : MonoBehaviour
 	/// If no boss script is loaded, use the default e9s boss script
 	/// </summary>
 	public TextAsset defaultBossScript;
-	private List<ActionQueue> actionQueues;
+
+	// for referencing all the action
+	private List<ActionQueue> allActions;
 
 	// keep it at 1 for normal speed, increment betwee 2-6 to speed up fight
 	public float debugSpeedUpCast = 1;
@@ -41,7 +43,7 @@ public class Boss : MonoBehaviour
 	}
 
 	private bool validate() {
-		if(actionQueues.Count > 0) {
+		if(allActions.Count > 0) {
 			return true;
 		}
 		return false;
@@ -55,18 +57,25 @@ public class Boss : MonoBehaviour
 			Debug.Log("No script was loaded, loading default boss action");
 			LoadDefaultScript();
 		} else {
-			this.actionQueues = actionQueues;
+			this.allActions = actionQueues;
 		}
 	}
 
 	private void LoadDefaultScript() {
 		if(defaultBossScript) {
+
 			// load json from referenced text file
-			ActionQueueLoader actionLoader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
+			ActionQueueLoader loader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
 			// get the actions from the loader class
-			ActionQueue[] actions = actionLoader.actionsQueues;
+			ActionQueue[] actions = loader.actionsQueues;
 			// convert array to list for easier use
-			actionQueues = new List<ActionQueue>(actions);
+			List<ActionQueue> allActionsTemp = new List<ActionQueue>(actions);
+
+			ActionPhase[] allPhases = loader.actionPhases;
+			//Debug.Log("all phases count: " + allPhases.Length);
+
+			allActions = allPhases[0].GetActionQueues(allActionsTemp);
+
 		} else {
 			throw new UnityException("defaultBossScript null and required");
 		}
@@ -89,14 +98,14 @@ public class Boss : MonoBehaviour
 	IEnumerator playActions() {
 		while(canPlayNextAction) {
 			//if the action exist
-			if(actionQueues.Count > 0) {
+			if(allActions.Count > 0) {
 				//yield return new WaitForSeconds(1);
 
 				// get and pop the action out
-				ActionQueue action = actionQueues[0];
+				ActionQueue action = allActions[0];
 				Debug.Log("now starting action " + action.name);
 				EventManager.alertBossUpcomingAction(action);
-				actionQueues.RemoveAt(0);
+				allActions.RemoveAt(0);
 
 				// delay time until cast
 				//Debug.Log("delay time for action " + action.castDelay);

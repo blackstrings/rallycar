@@ -5,7 +5,7 @@ using UnityEngine;
 /// Read from .json text file https://forum.unity.com/threads/how-to-read-json-file.401306/
 /// </summary>
 [Serializable]
-public class ActionQueue
+public class ActionQueue : ICloneable
 {
 	public int id;
 	public string name = "action no name";
@@ -50,5 +50,9 @@ public class ActionQueue
 		// instantiate the action class
 
 		// play the the aciton class
+	}
+
+	public object Clone() {
+		return this.MemberwiseClone();
 	}
 }
