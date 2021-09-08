@@ -61,7 +61,7 @@ public class SteerWheel : MonoBehaviour
         float R2 = 270;
 
         float epsilon = 20;
-        List<float> arr = new List<float> {0, L1, L2, R1, R2 };
+        List<float> arr = new List<float> {N, L1, L2, R1, R2 };
 
         // find the matching nearewt rotation
         int index = 0;

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Newtonsoft.Json;
+using UnityEngine.Networking;
 
 
 namespace LAO.Generic {
@@ -42,7 +42,7 @@ namespace LAO.Generic {
 			string url = query;
 
 			//json data - works with only UnityWebRequest
-			string jstr = "{\'name\':\'john\'}";
+			//string jstr = "{\'name\':\'john\'}";
 
 			//form data - works with both UnityWebRequest and WWW
 			WWWForm f = new WWWForm();
@@ -91,6 +91,7 @@ namespace LAO.Generic {
 			//WWW POST
 			//###################################
 			//You have to use loops to populate the form
+			/*
 			WWW www = new WWW(url, f);
 			yield return www;
 			if (!string.IsNullOrEmpty(www.error)) {
@@ -98,6 +99,7 @@ namespace LAO.Generic {
 			} else {
 				Debug.Log(www.text);
 			}
+			*/
 			//################################## end of www post
 
 
@@ -106,7 +108,7 @@ namespace LAO.Generic {
 			//######################################
 			//This new method allows you to pass in json format str as a argument into the
 			//the only downside is that rails cannot parse this properly on rails server
-			/*	
+			
 
 
 
@@ -119,22 +121,22 @@ namespace LAO.Generic {
 
 			//2016-02-19 03:03:33
 
-			var www = UnityWebRequest.Post(url, hash);
+			UnityWebRequest www = UnityWebRequest.Post(url, hash);
 			//UnityWebRequest www = UnityWebRequest.Get(url);
 			www.SetRequestHeader("Content-Type", "application/json");
 			//www.SetRequestHeader("Content-Type", "text/json");
 
             www.downloadHandler = new DownloadHandlerBuffer();
 
-            yield return www.Send();
-            if (www.isError) {
+            yield return www.SendWebRequest();
+            if (www.result == UnityWebRequest.Result.ConnectionError) {
                 Debug.Log(www.error);
             } else {
 				textOutput_gui.text = "login failed!";
                 Debug.Log("Form uploaded complete");
                 Debug.Log(www.downloadHandler.text);
             }
-			*/
+			
 			//------- UNITY WEB REQUEST  end-------------
 
 

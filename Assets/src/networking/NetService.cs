@@ -6,10 +6,10 @@ using UnityEngine.UI;
 namespace LAO.Generic {
 
     /// <summary>
-    /// How unity communicates to other server
+    /// How unity communicates to other server. WWW is obsolete use UnityWebRequest
     /// </summary>
     public class NetService : MonoBehaviour {
-
+        /*
         private string serverURL = "https://mydomain.com/getData.php";
         string jsonStr { get; set; }
         List<string> data;
@@ -69,5 +69,6 @@ namespace LAO.Generic {
 
             StartCoroutine(getDataFromServer(data[currentData]));
         }
+        */
     }
 }

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Moves a GO infinitely in one direction
+/// </summary>
 public class TranslatorReset : MonoBehaviour
 {
 	public Vector3 startPos = new Vector3(0, 0, 90);
-	public bool enabled = false;
+	public bool isEnabled = false;
 	public float x;
 	public float y;
 	public float z;
