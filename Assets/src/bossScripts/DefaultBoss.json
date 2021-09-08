@@ -1,7 +1,6 @@
 ﻿{
     "actionsQueues": [
         {
-            "actionsQueues": [],
             "id": 1,
             "name": "Ground Razing Particle",
             "actionDesc": "Raid AOE",
@@ -10,10 +9,10 @@
             "goToSpeed": 0,
             "castDelay": 16,
             "castTime": 3,
+            "delayTakeAction": 0,
             "castAnimationTime": 10
         },
         {
-            "actionsQueues": [],
             "id": 2,
             "name": "Art of Darkness - Spread",
             "actionDesc": "aoe",
@@ -22,10 +21,10 @@
             "goToSpeed": 0,
             "castDelay": 5,
             "castTime": 5,
+            "delayTakeAction": 0,
             "castAnimationTime": 5
         },
         {
-            "actionsQueues": [],
             "id": 3,
             "name": "Art of Darkness - Stack",
             "actionDesc": "aoe",
@@ -34,19 +33,39 @@
             "goToSpeed": 0,
             "castDelay": 5,
             "castTime": 5,
+            "delayTakeAction": 0,
             "castAnimationTime": 5
         },
         {
-            "actionsQueues": [],
             "id": 100,
             "name": "Level Complete!",
             "actionDesc": "Level Complete!",
-            "faceDirection": [ 0, 0, 1],
+            "faceDirection": [ 0, 0, 1 ],
             "goToPosition": [ 0, 0, 0 ],
             "goToSpeed": 0,
             "castDelay": 5,
             "castTime": 5,
+            "delayTakeAction": 0,
             "castAnimationTime": 3
         }
+    ],
+    "scriptOrder": [
+        {
+            "phase": "start",
+            "actions": [
+                [ 1 ],
+                [ 2, 3 ],
+                [ 4 ]
+            ]
+        },
+        {
+            "phase": "brambels",
+            "actions": [
+                [ 1 ],
+                [ 2, 3 ],
+                [ 4 ]
+            ]
+        }
+
     ]
 }

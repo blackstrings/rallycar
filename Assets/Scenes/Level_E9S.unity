@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charCtrl: {fileID: 0}
-  walkSpeed: 15
+  walkSpeed: 10
   turnSmoothTime: 0.05
 --- !u!143 &597341713
 CharacterController:

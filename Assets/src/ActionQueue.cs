@@ -10,12 +10,22 @@ public class ActionQueue
 	public int id;
 	public string name = "action no name";
 	public string actionDesc = "no description";
+
+	// ---------------------------------
+	// delay till cast
 	public float castDelay = 2f;
+	// casting delay
 	public float castTime = 2f;
+	// delay action after cast time is up
+	public float delayTakeAction = 1f;
+	// action animation delay
 	public float castAnimationTime = 2f;
 
+	// ---------------------------------
 	public float positionSpeed = 5f;
+	// vector xyz so holds 3 floats
 	public float[] goToPosition;
+	// 0 for instant teleport and above 0 for animating to position
 	public float goToSpeed;
 
 	// face the user in the direciton

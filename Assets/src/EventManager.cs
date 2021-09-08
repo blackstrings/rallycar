@@ -1,5 +1,6 @@
-public static class EventManager
-{
+using UnityEngine;
+
+public static class EventManager {
 
 	public delegate void OnBossUpcomingActionAlert(ActionQueue actionQueue);
 	public static event OnBossUpcomingActionAlert onBossUpcomingActionAlert;
@@ -9,15 +10,19 @@ public static class EventManager
 
 	// boss next action alert
 	public static void alertBossUpcomingAction(ActionQueue actionQueue) {
-		onBossUpcomingActionAlert(actionQueue);
+		if (actionQueue != null) {
+			onBossUpcomingActionAlert(actionQueue);
+		} else {
+			Debug.Log("event boss action alert failed, action null");
+		}
 	}
 
 	// boss casting
 	public static void alertBossActionCasting(ActionQueue actionQueue) {
-		if(actionQueue != null) {
+		if (actionQueue != null) {
 			onBossActionCastingAlert(actionQueue);
 		} else {
-			
+			Debug.Log("event boss casting failed, action null");
 		}
 	}
 }

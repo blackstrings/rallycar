@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
 	/// Begins the round. Called by the sceneManager.
 	/// </summary>
 	public void StartRound(List<ActionQueue> actionQueues) {
-		LoadBossActions(actionQueues);
+		LoadActionQueues(actionQueues);
 		if(validate()) {
 			StartCoroutine(playActions());
 		} else {
@@ -50,16 +50,16 @@ public class Boss : MonoBehaviour
 	/// <summary>
 	/// Boss should be fed a boss script data from the network. If not, it will use the default script.
 	/// </summary>
-	private void LoadBossActions(List<ActionQueue> actionQueues) {
+	private void LoadActionQueues(List<ActionQueue> actionQueues) {
 		if(actionQueues == null) {
 			Debug.Log("No script was loaded, loading default boss action");
-			SetUpAI();
+			LoadDefaultScript();
 		} else {
 			this.actionQueues = actionQueues;
 		}
 	}
 
-	private void SetUpAI() {
+	private void LoadDefaultScript() {
 		if(defaultBossScript) {
 			// load json from referenced text file
 			ActionQueueLoader actionLoader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
@@ -68,12 +68,12 @@ public class Boss : MonoBehaviour
 			// convert array to list for easier use
 			actionQueues = new List<ActionQueue>(actions);
 		} else {
-			throw new UnityException("defaultBossScript null when needed");
+			throw new UnityException("defaultBossScript null and required");
 		}
 	}
 
 	/// <summary>
-	/// hard face direciton
+	/// force boss facing direciton
 	/// </summary>
 	/// <param name="dir">Dir.</param>
 	void faceDirection(Vector3 dir) {
@@ -82,13 +82,15 @@ public class Boss : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 	}
 
+	/// <summary>
+	/// Loop to play all boss actions
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator playActions() {
 		while(canPlayNextAction) {
 			//if the action exist
 			if(actionQueues.Count > 0) {
-
-				// very short delay to put bandaid over loading default
-				yield return new WaitForSeconds(2);
+				//yield return new WaitForSeconds(1);
 
 				// get and pop the action out
 				ActionQueue action = actionQueues[0];
@@ -96,17 +98,21 @@ public class Boss : MonoBehaviour
 				EventManager.alertBossUpcomingAction(action);
 				actionQueues.RemoveAt(0);
 
-				// delay the action
+				// delay time until cast
 				//Debug.Log("delay time for action " + action.castDelay);
 				yield return new WaitForSeconds(action.castDelay / debugSpeedUpCast);
 
-				// start casting
-				//Debug.Log("starting casting action");
+				// casting time
 				faceDirection(action.getFacingDirection());
 				EventManager.alertBossActionCasting(action);
 				yield return new WaitForSeconds(action.castTime);
 
-				// give time for the animation
+				// delay before actionally attacking
+				if(action.delayTakeAction > 0) {
+					yield return new WaitForSeconds(action.delayTakeAction);
+				}
+
+				// give time for attack animation
 				Debug.Log("playing boss animation action" + action.name);
 				// perform the action todo
 				yield return new WaitForSeconds(action.castAnimationTime / debugSpeedUpCast);

@@ -7,10 +7,13 @@ public class LevelManager : MonoBehaviour {
 
 	// Start is called before the first frame update
 	void Start() {
-		init();
+		StartCoroutine(Init());
 	}
 
-	private void init() {
+	IEnumerator Init() {
+		// always wait for 1 second before starting round to give time for everythign to setup
+		yield return new WaitForSeconds(1);
+
 		LevelInfo level = GameManager.Instance.savedLevelInfo;
 		if (level != null) {
 			loadLevel(level);
