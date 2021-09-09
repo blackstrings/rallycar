@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Boss player
@@ -65,7 +66,9 @@ public class Boss : MonoBehaviour
 		if(defaultBossScript) {
 
 			// load json from referenced text file
-			ActionQueueLoader loader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
+			//ActionQueueLoader loader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
+			ActionQueueLoader loader = JsonConvert.DeserializeObject<ActionQueueLoader>(defaultBossScript.text);
+
 			// get the actions from the loader class
 			ActionQueue[] actions = loader.actionsQueues;
 			// convert array to list for easier use

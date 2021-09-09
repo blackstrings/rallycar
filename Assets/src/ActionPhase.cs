@@ -1,42 +1,85 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
-/// Use to deserialize a json text file with JsonUtility, then after loaded, you can extract the instantiated
+/// An action phase will containt a list of actions under this phase.
+/// We are using newtonsoft json serializer due to nested arrays
+/// hint https://stackoverflow.com/questions/36239705/serialize-and-deserialize-json-and-json-array-in-unity
 /// actionQueues
 /// </summary>
 [Serializable]
 public class ActionPhase {
-	public string name;
-	public int[] actionOrderIds;
 
+	/// <summary>
+	/// name of the phase
+	/// </summary>
+	public string name;
+
+	/// <summary>
+	/// The action ids this phase contains
+	/// </summary>
+	public List<List<int>> actionOrderIds;
+
+	/// <summary>
+	/// Returns the actions for this phase.
+	/// </summary>
+	/// <param name="allActionQueues"></param>
+	/// <returns></returns>
 	public List<ActionQueue> GetActionQueues(List<ActionQueue> allActionQueues) {
-		List<ActionQueue> phaseActionQueues = new List<ActionQueue>();
 
 		// turn list into map
-		Dictionary<int, ActionQueue> actionMap = GetListAsMap(allActionQueues);
+		Dictionary<int, ActionQueue> allActionsDict = GetAllActionsAsDictionary(allActionQueues);
 
-		for(int i=0; i<actionOrderIds.Length; i++) {
-		//actionOrderIds.ForEach(ids => {
-			if(actionOrderIds[i] != null) {
-				ActionQueue action = actionMap[actionOrderIds[i]];
-				if (action != null) {
-					phaseActionQueues.Add(action);
+		// collect the actions for this phase
+		List<ActionQueue> finalActionList = new List<ActionQueue>();
+
+		if (actionOrderIds.Count > 0) {
+			//Debug.Log("posible Rows: " + actionOrderIds.Count);
+			actionOrderIds.ForEach(idsList => {
+
+				if (idsList.Count != 0) {
+
+					if (idsList.Count > 1) {
+						ActionQueue action = pickRandomAction(idsList, allActionsDict);
+						if (action != null) {
+							finalActionList.Add(action);
+						} else {
+							Debug.Log("failed to randomize action");
+						}
+
+					} else {
+						ActionQueue action = allActionsDict[idsList[0]];
+						if (action != null) {
+							finalActionList.Add(action);
+						} else {
+							Debug.Log("No action found for id: " + idsList[0]);
+						}
+					}
+
 				}
-			}
+			});
+
+		} else {
+			Debug.Log("no actions extracted, actionOrderIds null or empty");
 		}
-		
 
-		Debug.Log("actions in phase count: " + actionOrderIds.Length);
-
-		return phaseActionQueues;
+		//Debug.Log("total rows: " + finalActionList.Count);
+		return finalActionList;
 	}
 
-	private Dictionary<int, ActionQueue> GetListAsMap(List<ActionQueue> actions) {
+	private ActionQueue pickRandomAction(List<int> ids, Dictionary<int, ActionQueue> allActions) {
+		//Debug.Log("randoming between 0-" + ids.Count);
+		int rand = Random.Range(0, ids.Count);
+		//Debug.Log("randomed: " + rand);
+		return allActions[ids[rand]];
+	}
+
+	private Dictionary<int, ActionQueue> GetAllActionsAsDictionary(List<ActionQueue> actions) {
 		Dictionary<int, ActionQueue> map = new Dictionary<int, ActionQueue>();
 		actions.ForEach(action => {
-			map.Add(action.id, action);
+			map.Add(action.id, (ActionQueue)action.Clone());
 		});
 		return map;
 	}
