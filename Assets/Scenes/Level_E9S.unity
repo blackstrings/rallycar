@@ -213,18 +213,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 229062151}
   m_CullTransparentMesh: 1
---- !u!114 &246359945 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6394892645157532670, guid: bbab23d61a2b442f6a7b9e27260312ff, type: 3}
-  m_PrefabInstance: {fileID: 6394892645066364023}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23fdf9a477c404a6babdc284665de3b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &292423980
+--- !u!1 &492175134
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,8 +221,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 292423982}
-  - component: {fileID: 292423981}
+  - component: {fileID: 492175136}
+  - component: {fileID: 492175135}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -241,26 +230,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &292423981
+--- !u!114 &492175135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292423980}
+  m_GameObject: {fileID: 492175134}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2959dd833730c4a69beaafa38b14f7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 246359945}
---- !u!4 &292423982
+--- !u!4 &492175136
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292423980}
+  m_GameObject: {fileID: 492175134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -630,7 +618,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 0.94
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 36.5

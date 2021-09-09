@@ -4,16 +4,27 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 public class LevelManager : MonoBehaviour {
-	public Boss boss;
+	private Boss boss;
 
 	// Start is called before the first frame update
 	void Start() {
-		StartCoroutine(Init());
+		GameObject bossGO = GameObject.FindGameObjectsWithTag("boss")[0];
+		if (bossGO) {
+			boss = bossGO.GetComponent<Boss>();
+		} else {
+			Debug.Log("boss gameobject not found");
+		}
+
+		if (boss) {
+			StartCoroutine(Init());
+		} else {
+			Debug.Log("boss componen not found");
+		}
 	}
 
 	IEnumerator Init() {
 		// always wait for 1 second before starting round to give time for everythign to setup
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(3);
 
 		LevelInfo level = GameManager.Instance.savedLevelInfo;
 		if (level != null) {
@@ -25,7 +36,7 @@ public class LevelManager : MonoBehaviour {
 
 	public void loadLevel(LevelInfo levelInfo) {
 		// load boss
-		
+
 
 		// load all players
 

@@ -11,11 +11,17 @@ public class Menu : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-
+        OnValidate();
         loadAndPopulateMenu();
     }
 
-    private void loadAndPopulateMenu() {
+    private void OnValidate() {
+        if (level_dd == null) {
+            throw new UnityException("invalid setup");
+		}
+	}
+
+	private void loadAndPopulateMenu() {
         updateLevelDropdown();
     }
 

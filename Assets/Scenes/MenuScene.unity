@@ -1467,6 +1467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d583055a04fdb4a0383926a8de906e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level_dd: {fileID: 1682951194}
 --- !u!4 &447499816
 Transform:
   m_ObjectHideFlags: 0
@@ -1510,7 +1511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7749fbefa71f47f2bc8ae17bb291a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventManager: {fileID: 0}
   mainPlayerId: 0
 --- !u!4 &542888737
 Transform:
