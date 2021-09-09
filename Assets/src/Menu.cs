@@ -32,9 +32,13 @@ public class Menu : MonoBehaviour {
 
             // get additional items other than the defaults
 
-            options.Add(new DropD.OptionData("testing"));
-
+            dd[0].ClearOptions();
+            options.Add(new DropD.OptionData("E9S"));
+            options.Add(new DropD.OptionData("E10S"));
+            options.Add(new DropD.OptionData("E11S"));
+            options.Add(new DropD.OptionData("E12S"));
             dd[0].AddOptions(options);
+
         } else {
             Debug.Log("no opptions");
         }
