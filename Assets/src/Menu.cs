@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPDropdown = TMPro.TMP_Dropdown;
 using OptionData = TMPro.TMP_Dropdown.OptionData;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Handles drop downs.
@@ -20,10 +22,12 @@ public class Menu : MonoBehaviour {
 	public GameObject dropdown4;
 
 	// level to playstyle mapping
-	private Dictionary<string, List<LevelModel>> levelPlaystylesMap = new Dictionary<string, List<LevelModel>>();
+	private Dictionary<string, List<LevelModel>> allLevelModelMap = new Dictionary<string, List<LevelModel>>();
 	// playstyle to class
 	//private Dictionary<string, List<string>> levelPlaystylesMap = new Dictionary<string, List<string>>();
 
+	//mock level data
+	public TextAsset levelModelData;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -46,16 +50,24 @@ public class Menu : MonoBehaviour {
 
 	private void loadAndPopulateMenu() {
 		// make web calls to get the level data, playstyle, etc
+		LevelModelLoader loader = JsonConvert.DeserializeObject<LevelModelLoader>(levelModelData.text);
+
+		// get the actions from the loader class
+		LevelModel[] _levels = loader.levels;
+
+		// convert array to list for easier use
+		List<LevelModel> levels = new List<LevelModel>(_levels);
+
 
 		//mock level datas todo load the json files
-		string[] _levelNames = { "E9S", "E10S", "E11S", "E12S" };
-		List<string> levelNames = new List<string>(_levelNames);
+		//string[] _levelNames = { "E9S", "E10S", "E11S", "E12S" };
+		
 
 		// mock playstyle todo create an object for playstyle
 		string[] _playStyleNames = { "JP1", "Happy", "Test1" };
 		List<string> playStyleNames = new List<string>(_playStyleNames);
 
-		updateLevelDropdown(levelNames);
+		updateLevelDropdown(levels);
 
 		// setup playstyle mapping
 
@@ -66,10 +78,17 @@ public class Menu : MonoBehaviour {
 	}
 
 
-	private void updateLevelDropdown(List<string> levelNames) {
+	private void updateLevelDropdown(List<LevelModel> levels) {
 		TMPDropdown[] ddList = dropdown1.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
-		if (dd != null && dd) {
+		if (dd != null && dd && levels != null && levels.Count > 0) {
+
+			// get level name as list
+			List<string> levelNames = new List<string>();
+			levels.ForEach(level => {
+				levelNames.Add(level.name);
+			});
+
 			addToDropDown(dd, levelNames);
 			// add event listener on select
 			dd.onValueChanged.AddListener(delegate {

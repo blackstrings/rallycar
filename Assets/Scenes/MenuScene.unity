@@ -1471,6 +1471,7 @@ MonoBehaviour:
   dropdown2: {fileID: 719852661}
   dropdown3: {fileID: 2044198346}
   dropdown4: {fileID: 1876519272}
+  levelModelData: {fileID: 4900000, guid: 57f1210e1355641bbb6172763000ae1b, type: 3}
 --- !u!4 &447499816
 Transform:
   m_ObjectHideFlags: 0
