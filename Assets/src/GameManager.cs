@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
 	public int mainPlayerId;
-	public LevelInfo savedLevelInfo = new LevelInfo();
+	public LevelModel selectedLevel = new LevelModel();
 
 
     // (Optional) Prevent non-singleton constructor use.

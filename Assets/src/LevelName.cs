@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// custom enum for level, but might not be good to use due to dynamic levels
+/// </summary>
 public class LevelName {
 
 	public LevelName E9S = new LevelName("E9S");

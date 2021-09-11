@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelInfo
+public class LevelModel
 {
 	public string name;
-	public int numOfPlayers;
+	public List<string> checkpoints;
 
 	// to know which player is the main player
-	public int mainPlayerId;
+	public int classSelectionId;
+
 }

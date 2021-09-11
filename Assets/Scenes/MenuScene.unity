@@ -1467,7 +1467,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d583055a04fdb4a0383926a8de906e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level_dd: {fileID: 1682951194}
+  dropdown1: {fileID: 1682951194}
+  dropdown2: {fileID: 719852661}
+  dropdown3: {fileID: 2044198346}
+  dropdown4: {fileID: 1876519272}
 --- !u!4 &447499816
 Transform:
   m_ObjectHideFlags: 0
@@ -1658,7 +1661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E9S
+  m_text: select level
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1769,12 +1772,12 @@ RectTransform:
   - {fileID: 551591616}
   - {fileID: 1987385474}
   m_Father: {fileID: 1406422829}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -123}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -173.2}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719852663
 MonoBehaviour:
@@ -1826,11 +1829,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: JP1
-      m_Image: {fileID: 0}
-    - m_Text: Rainkey
-      m_Image: {fileID: 0}
-    - m_Text: No Man Sky
+    - m_Text: select strategy
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2659,8 +2658,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -243}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -244.9}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056715087
 MonoBehaviour:
@@ -3707,9 +3706,9 @@ RectTransform:
   m_Children:
   - {fileID: 791826472}
   - {fileID: 1682951195}
+  - {fileID: 1876519273}
   - {fileID: 719852662}
   - {fileID: 2044198347}
-  - {fileID: 1876519273}
   - {fileID: 1056715086}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -4168,7 +4167,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -89.5}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 250, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1682951196
 MonoBehaviour:
@@ -4220,13 +4219,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: E9S
-      m_Image: {fileID: 0}
-    - m_Text: E10S
-      m_Image: {fileID: 0}
-    - m_Text: E11S
-      m_Image: {fileID: 0}
-    - m_Text: E12S
+    - m_Text: select level
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4477,7 +4470,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JP1
+  m_text: select strategy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4843,7 +4836,7 @@ GameObject:
   - component: {fileID: 1876519275}
   - component: {fileID: 1876519274}
   m_Layer: 5
-  m_Name: battle_phase_dd
+  m_Name: checkpoint_dd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4864,12 +4857,12 @@ RectTransform:
   - {fileID: 1197086810}
   - {fileID: 1968249354}
   m_Father: {fileID: 1406422829}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -210.5}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -138.2}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1876519274
 MonoBehaviour:
@@ -4921,11 +4914,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Full Fight
-      m_Image: {fileID: 0}
-    - m_Text: Brambles
-      m_Image: {fileID: 0}
-    - m_Text: Tower1
+    - m_Text: select checkpoint
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5026,7 +5015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Full Fight
+  m_text: select checkpoint
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5353,12 +5342,12 @@ RectTransform:
   - {fileID: 292433392}
   - {fileID: 96213403}
   m_Father: {fileID: 1406422829}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -157.1}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -207.2}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2044198348
 MonoBehaviour:
@@ -5410,21 +5399,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Tank1
-      m_Image: {fileID: 0}
-    - m_Text: Tank2
-      m_Image: {fileID: 0}
-    - m_Text: Healer1
-      m_Image: {fileID: 0}
-    - m_Text: Healer2
-      m_Image: {fileID: 0}
-    - m_Text: Dps1
-      m_Image: {fileID: 0}
-    - m_Text: Dps2
-      m_Image: {fileID: 0}
-    - m_Text: Dps3
-      m_Image: {fileID: 0}
-    - m_Text: Dps4
+    - m_Text: select class
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5573,7 +5548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tank1
+  m_text: select class
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

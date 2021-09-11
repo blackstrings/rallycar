@@ -1,0 +1,37 @@
+﻿{
+    "levels": [
+        {
+            "name": "E9S",
+            "checkpoints": [
+                "fullfight",
+                "brambels",
+                "tower"
+            ]
+        },
+        {
+            "name": "E10S",
+            "checkpoints": [
+                "fullfight",
+                "shadow",
+                "vg2"
+            ]
+        },
+        {
+            "name": "E11S",
+            "checkpoints": [
+                "fullfight",
+                "lightening",
+                "platypuss"
+            ]
+        },
+        {
+            "name": "E12S",
+            "checkpoints": [
+                "fullfight",
+                "gonego",
+                "flight full",
+                "danger hole"
+            ]
+        }
+    ]
+}

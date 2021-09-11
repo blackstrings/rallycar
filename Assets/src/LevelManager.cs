@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour {
 		// always wait for 1 second before starting round to give time for everythign to setup
 		yield return new WaitForSeconds(3);
 
-		LevelInfo level = GameManager.Instance.savedLevelInfo;
+		LevelModel level = GameManager.Instance.selectedLevel;
 		if (level != null) {
 			loadLevel(level);
 		} else {
@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void loadLevel(LevelInfo levelInfo) {
+	public void loadLevel(LevelModel levelInfo) {
 		// load boss
 
 
