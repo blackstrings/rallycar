@@ -71,13 +71,14 @@ public class Boss : MonoBehaviour
 
 			// get the actions from the loader class
 			ActionQueue[] actions = loader.actionsQueues;
+
 			// convert array to list for easier use
 			List<ActionQueue> allActionsTemp = new List<ActionQueue>(actions);
 
-			ActionPhase[] allPhases = loader.actionPhases;
+			Checkpoint[] allCheckpoints = loader.checkpoints;
 			//Debug.Log("all phases count: " + allPhases.Length);
 
-			allActions = allPhases[0].GetActionQueues(allActionsTemp);
+			allActions = allCheckpoints[0].GetActionQueues(allActionsTemp);
 
 		} else {
 			throw new UnityException("defaultBossScript null and required");

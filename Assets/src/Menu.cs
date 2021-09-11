@@ -20,7 +20,7 @@ public class Menu : MonoBehaviour {
 	public GameObject dropdown4;
 
 	// level to playstyle mapping
-	private Dictionary<string, List<string>> levelPlaystylesMap = new Dictionary<string, List<string>>();
+	private Dictionary<string, List<LevelModel>> levelPlaystylesMap = new Dictionary<string, List<LevelModel>>();
 	// playstyle to class
 	//private Dictionary<string, List<string>> levelPlaystylesMap = new Dictionary<string, List<string>>();
 
@@ -73,14 +73,14 @@ public class Menu : MonoBehaviour {
 			addToDropDown(dd, levelNames);
 			// add event listener on select
 			dd.onValueChanged.AddListener(delegate {
-				UpdatePlaystyleDropdown(dd.value);
+				UpdateStrategyDropdown(dd.value);
 			});
 		} else {
 			Debug.Log("updateLevelDropdown failed, dd null");
 		}
 	}
 
-	public void UpdatePlaystyleDropdown(int levelNameIndex) {
+	public void UpdateStrategyDropdown(int levelNameIndex) {
 		TMPDropdown[] ddList = dropdown2.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		if (dd != null && dd) {

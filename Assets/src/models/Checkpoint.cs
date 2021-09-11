@@ -4,13 +4,13 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
-/// An action phase will containt a list of actions under this phase.
+/// An checkpoint will containt a list of boss actions
 /// We are using newtonsoft json serializer due to nested arrays
 /// hint https://stackoverflow.com/questions/36239705/serialize-and-deserialize-json-and-json-array-in-unity
 /// actionQueues
 /// </summary>
 [Serializable]
-public class ActionPhase {
+public class Checkpoint {
 
 	/// <summary>
 	/// name of the phase
@@ -18,12 +18,13 @@ public class ActionPhase {
 	public string name;
 
 	/// <summary>
-	/// The action ids this phase contains
+	/// The action ids this checkpoint contains
 	/// </summary>
 	public List<List<int>> actionOrderIds;
 
 	/// <summary>
-	/// Returns the actions for this phase.
+	/// Returns one or more action(s) for this checkpoint.
+	/// Actions may be returned in random order.
 	/// </summary>
 	/// <param name="allActionQueues"></param>
 	/// <returns></returns>
@@ -32,7 +33,7 @@ public class ActionPhase {
 		// turn list into map
 		Dictionary<int, ActionQueue> allActionsDict = GetAllActionsAsDictionary(allActionQueues);
 
-		// collect the actions for this phase
+		// collect the actions for this checkpoint
 		List<ActionQueue> finalActionList = new List<ActionQueue>();
 
 		if (actionOrderIds.Count > 0) {
@@ -42,11 +43,14 @@ public class ActionPhase {
 				if (idsList.Count != 0) {
 
 					if (idsList.Count > 1) {
-						ActionQueue action = pickRandomAction(idsList, allActionsDict);
-						if (action != null) {
-							finalActionList.Add(action);
+						// it's possible a list of random actions are returned
+						List<ActionQueue> actions = pickRandomActions(idsList, allActionsDict);
+						if (actions.Count > 0) {
+							actions.ForEach(action => {
+								finalActionList.Add(action);
+							});
 						} else {
-							Debug.Log("failed to randomize action");
+							Debug.Log("failed to add randomized action, count is 0");
 						}
 
 					} else {
@@ -69,11 +73,33 @@ public class ActionPhase {
 		return finalActionList;
 	}
 
-	private ActionQueue pickRandomAction(List<int> ids, Dictionary<int, ActionQueue> allActions) {
-		//Debug.Log("randoming between 0-" + ids.Count);
-		int rand = Random.Range(0, ids.Count);
-		//Debug.Log("randomed: " + rand);
-		return allActions[ids[rand]];
+	/// <summary>
+	/// When there is an array of actions, only one action can be choosen if 999 isn't present.
+	/// if 999 present, we use it as a flag to indicate that all actions should be put in random order and all returned.
+	/// </summary>
+	/// <param name="ids"></param>
+	/// <param name="actionsMap"></param>
+	/// <returns></returns>
+	private List<ActionQueue> pickRandomActions(List<int> ids, Dictionary<int, ActionQueue> actionsMap) {
+		List<ActionQueue> actions = new List<ActionQueue>();
+
+		if (ids.Contains(999)) {
+			// return all actions but random the sort order
+			ids.RemoveAt(ids.Count - 1); // pop off the 999 element at end of array
+			Utils.Shuffle<int>(ids);    // randomize the order
+			for(int i=0; i<ids.Count; i++){
+				actions.Add(actionsMap[ids[i]]);
+			}
+		} else {
+			// only return one action from the array
+			int rand = Random.Range(0, ids.Count);
+			if (actionsMap.ContainsKey(ids[rand])) {
+				actions.Add(actionsMap[ids[rand]]);
+			} else {
+				Debug.LogError("map does not contain key " + rand);
+			}
+		}
+		return actions;
 	}
 
 	private Dictionary<int, ActionQueue> GetAllActionsAsDictionary(List<ActionQueue> actions) {

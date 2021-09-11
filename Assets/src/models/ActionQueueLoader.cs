@@ -11,5 +11,5 @@ using System;
 public class ActionQueueLoader
 {
 	public ActionQueue[] actionsQueues;
-	public ActionPhase[] actionPhases;
+	public Checkpoint[] checkpoints;
 }

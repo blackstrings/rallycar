@@ -10,5 +10,5 @@ using System;
 [Serializable]
 public class LevelModelLoader {
 	public LevelModel[] levels;
-	public ActionPhase[] actionPhases;
+	public Checkpoint[] checkpoints;
 }
