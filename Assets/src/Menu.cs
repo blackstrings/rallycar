@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPDropdown = TMPro.TMP_Dropdown;
 using OptionData = TMPro.TMP_Dropdown.OptionData;
-using Newtonsoft.Json;
 
 /// <summary>
 /// Handles drop downs.
@@ -13,76 +12,53 @@ using Newtonsoft.Json;
 public class Menu : MonoBehaviour {
 
 	/// <summary> level </summary>
-	public GameObject dropdown1;
+	public GameObject level_dd;
 	/// <summary> playstyle </summary>
 	public GameObject dropdown2;
 	/// <summary> class </summary>
 	public GameObject dropdown3;
 	/// <summary> checkpoint </summary>
-	public GameObject dropdown4;
+	public GameObject checkpoint_dd;
+
+	// provided on data load
+	private List<LevelModel> levels;
 
 	// level to playstyle mapping
 	private Dictionary<string, List<LevelModel>> allLevelModelMap = new Dictionary<string, List<LevelModel>>();
 	// playstyle to class
 	//private Dictionary<string, List<string>> levelPlaystylesMap = new Dictionary<string, List<string>>();
 
-	//mock level data
-	public TextAsset levelModelData;
-
 	// Start is called before the first frame update
 	void Start() {
 		OnValidate();
-		loadAndPopulateMenu();
 	}
 
 	private void OnValidate() {
 		bool result = true;
 
-		if (dropdown1 == null) { result = false; }
+		if (level_dd == null) { result = false; }
 		if (dropdown2 == null) { result = false; }
 		if (dropdown3 == null) { result = false; }
-		if (dropdown4 == null) { result = false; }
+		if (checkpoint_dd == null) { result = false; }
 
 		if (!result) {
 			throw new UnityException("invalid setup");
 		}
 	}
 
-	private void loadAndPopulateMenu() {
-		// make web calls to get the level data, playstyle, etc
-		LevelModelLoader loader = JsonConvert.DeserializeObject<LevelModelLoader>(levelModelData.text);
-
-		// get the actions from the loader class
-		LevelModel[] _levels = loader.levels;
-
-		// convert array to list for easier use
-		List<LevelModel> levels = new List<LevelModel>(_levels);
-
-
-		//mock level datas todo load the json files
-		//string[] _levelNames = { "E9S", "E10S", "E11S", "E12S" };
-		
-
-		// mock playstyle todo create an object for playstyle
-		string[] _playStyleNames = { "JP1", "Happy", "Test1" };
-		List<string> playStyleNames = new List<string>(_playStyleNames);
-
+	/// <summary>
+	/// Dataservice calls this
+	/// </summary>
+	/// <param name="levels"></param>
+	public void populateMenu(List<LevelModel> levels) {
 		updateLevelDropdown(levels);
-
-		// setup playstyle mapping
-
 	}
-
-	public void loadLevelData() {
-
-	}
-
 
 	private void updateLevelDropdown(List<LevelModel> levels) {
-		TMPDropdown[] ddList = dropdown1.GetComponents<TMPDropdown>();
+		TMPDropdown[] ddList = level_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		if (dd != null && dd && levels != null && levels.Count > 0) {
-
+			this.levels = levels;
 			// get level name as list
 			List<string> levelNames = new List<string>();
 			levels.ForEach(level => {
@@ -90,27 +66,43 @@ public class Menu : MonoBehaviour {
 			});
 
 			addToDropDown(dd, levelNames);
-			// add event listener on select
+
+			// update other drop downs on selection
 			dd.onValueChanged.AddListener(delegate {
-				UpdateStrategyDropdown(dd.value);
+				UpdateCheckpointDropdowns(dd.value);
 			});
 		} else {
 			Debug.Log("updateLevelDropdown failed, dd null");
 		}
 	}
 
-	public void UpdateStrategyDropdown(int levelNameIndex) {
-		TMPDropdown[] ddList = dropdown2.GetComponents<TMPDropdown>();
+	/// <summary>
+	/// Strategy is also aka playstyle for the level
+	/// </summary>
+	/// <param name="selectedLevelIndex"></param>
+	private void UpdateCheckpointDropdowns(int selectedLevelIndex) {
+		TMPDropdown[] ddList = checkpoint_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		if (dd != null && dd) {
-			// pull the play style based on the level name
-			string[] playstyleNames = { "JP1", "Mr Happy", "test" };
-			addToDropDown(dd, new List<string>(playstyleNames));
+
+			if(levels != null) {
+				// pull the play style based on the level name
+				LevelModel selectedLevel = levels[selectedLevelIndex];
+				if(selectedLevel != null) {
+					List<string> checkpoints = selectedLevel.checkpoints;
+					addToDropDown(dd, checkpoints);
+				}
+			}
 		} else {
 			Debug.Log("updatePlaystyleDropdown failed, dd null");
 		}
 	}
 
+	/// <summary>
+	/// Add a list of strings values to a specific drop down
+	/// </summary>
+	/// <param name="dropdown"></param>
+	/// <param name="items"></param>
 	private void addToDropDown(TMPDropdown dropdown, List<string> items) {
 		if (items != null && items.Count > 0) {
 			if (dropdown != null) {

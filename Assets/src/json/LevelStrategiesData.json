@@ -2,27 +2,27 @@
     "styles": [
         {
             "level": "E9S",
-            "style": "JP1",
+            "strategy": "JP1",
             "classes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ]
         },
         {
             "level": "E9S",
-            "style": "Happy",
+            "strategy": "Happy",
             "classes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ]
         },
         {
             "level": "E10S",
-            "style": "JP1",
+            "strategy": "JP1",
             "classes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ]
         },
         {
             "level": "E11S",
-            "style": "Happy",
+            "strategy": "Happy",
             "classes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ]
         },
         {
             "level": "E12S",
-            "style": "Happy",
+            "strategy": "Happy",
             "classes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ]
         }
     ]

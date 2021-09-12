@@ -3,7 +3,7 @@
         {
             "name": "E9S",
             "checkpoints": [
-                "fullfight",
+                "beginning",
                 "brambels",
                 "tower"
             ]
@@ -11,7 +11,7 @@
         {
             "name": "E10S",
             "checkpoints": [
-                "fullfight",
+                "beginning",
                 "shadow",
                 "vg2"
             ]
@@ -19,7 +19,7 @@
         {
             "name": "E11S",
             "checkpoints": [
-                "fullfight",
+                "beginning",
                 "lightening",
                 "platypuss"
             ]
@@ -27,7 +27,7 @@
         {
             "name": "E12S",
             "checkpoints": [
-                "fullfight",
+                "beginning",
                 "gonego",
                 "flight full",
                 "danger hole"

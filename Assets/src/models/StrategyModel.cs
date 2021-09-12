@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelModel
-{
+public class StrategyModel {
+	public string level;
 	public string name;
-	public List<string> checkpoints;
+	public List<string> classTypes;
 }

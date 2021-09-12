@@ -8,7 +8,7 @@ using System;
 /// actionQueues
 /// </summary>
 [Serializable]
-public class LevelModelLoader {
-	public List<LevelModel> levels;
-	public Checkpoint[] checkpoints;
+public class StrategyModelLoader {
+	public List<StrategyModel> strategies;
+	public List<string> classTypes;
 }

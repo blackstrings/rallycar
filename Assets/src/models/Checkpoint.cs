@@ -4,7 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
-/// An checkpoint will containt a list of boss actions
+/// Contains a list of boss actions
 /// We are using newtonsoft json serializer due to nested arrays
 /// hint https://stackoverflow.com/questions/36239705/serialize-and-deserialize-json-and-json-array-in-unity
 /// actionQueues

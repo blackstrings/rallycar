@@ -1448,6 +1448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 447499816}
   - component: {fileID: 447499815}
+  - component: {fileID: 447499817}
   m_Layer: 0
   m_Name: SceneGO
   m_TagString: Untagged
@@ -1467,11 +1468,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d583055a04fdb4a0383926a8de906e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropdown1: {fileID: 1682951194}
+  level_dd: {fileID: 1682951194}
   dropdown2: {fileID: 719852661}
   dropdown3: {fileID: 2044198346}
-  dropdown4: {fileID: 1876519272}
-  levelModelData: {fileID: 4900000, guid: 57f1210e1355641bbb6172763000ae1b, type: 3}
+  checkpoint_dd: {fileID: 1876519272}
 --- !u!4 &447499816
 Transform:
   m_ObjectHideFlags: 0
@@ -1486,6 +1486,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &447499817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447499814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6e4eb097d664882bab341735e03585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultLevelJson: {fileID: 4900000, guid: 57f1210e1355641bbb6172763000ae1b, type: 3}
+  menu: {fileID: 447499815}
 --- !u!1 &542888735
 GameObject:
   m_ObjectHideFlags: 0

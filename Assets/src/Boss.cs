@@ -62,6 +62,9 @@ public class Boss : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// If network fails, it will only load the default boss scripts provided with the build.
+	/// </summary>
 	private void LoadDefaultScript() {
 		if(defaultBossScript) {
 
@@ -96,7 +99,7 @@ public class Boss : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Loop to play all boss actions
+	/// Loop to play all boss actions until the end
 	/// </summary>
 	/// <returns></returns>
 	IEnumerator playActions() {
