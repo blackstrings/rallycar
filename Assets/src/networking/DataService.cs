@@ -8,7 +8,11 @@ public class DataService : MonoBehaviour {
 
 	private LevelModelLoader levelLoader;
 	private List<LevelModel> levels;
+	private List<StrategyModel> strategies;
+
+	// ---- defaults ---- //
 	public TextAsset defaultLevelJson;
+
 	public Menu menu;
 
 
@@ -20,15 +24,29 @@ public class DataService : MonoBehaviour {
 
 		menu = GetComponent<Menu>();
 		if (menu) {
-			LoadGameData();
+			StartCoroutine(LoadGameData());
 		} else {
 			throw new UnityException("DataService start failed, menu null");
 		}
 	}
 
-	private void LoadGameData() {
-		StartCoroutine(getGameData());
+	IEnumerator LoadGameData() {
+		Coroutine a = StartCoroutine(getGameData());
+		//Coroutine b = StartCoroutine(getStrategyData());
+
+		yield return a;
+		//yield return b;
+
+		if (levels != null) {
+			menu.populateMenu(levels);
+		} else {
+			Debug.Log("menu not popluated, levels null");
+		}
 	}
+
+	//IEnumerator getStrategyData() {
+
+	//}
 
 	/// <summary>
 	/// If the network is down, it'll fallback to the gamedata build with the version.
@@ -72,11 +90,9 @@ public class DataService : MonoBehaviour {
 		}
 
 		levels = DeserializeLevelData(gameDataJson);
-		if (levels != null) {
-			menu.populateMenu(levels);
-		} else {
-			Debug.Log("menu not popluated, levels null");
-		}
+
+		// wait on all data before populating the menu
+
 	}
 
 	private string getDefaultGameData() {

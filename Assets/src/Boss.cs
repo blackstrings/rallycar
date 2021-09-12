@@ -63,6 +63,7 @@ public class Boss : MonoBehaviour
 	}
 
 	/// <summary>
+	/// // todo move to dataService
 	/// If network fails, it will only load the default boss scripts provided with the build.
 	/// </summary>
 	private void LoadDefaultScript() {
