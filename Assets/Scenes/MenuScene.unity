@@ -1469,8 +1469,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level_dd: {fileID: 1682951194}
-  dropdown2: {fileID: 719852661}
-  dropdown3: {fileID: 2044198346}
+  strategy_dd: {fileID: 719852661}
+  classType_dd: {fileID: 2044198346}
   checkpoint_dd: {fileID: 1876519272}
 --- !u!4 &447499816
 Transform:
@@ -1499,6 +1499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultLevelJson: {fileID: 4900000, guid: 57f1210e1355641bbb6172763000ae1b, type: 3}
+  defaultStrategyJson: {fileID: 4900000, guid: d216ab6aaac7345eca15ccd9ee06af8a, type: 3}
   menu: {fileID: 447499815}
 --- !u!1 &542888735
 GameObject:
@@ -1766,7 +1767,7 @@ GameObject:
   - component: {fileID: 719852664}
   - component: {fileID: 719852663}
   m_Layer: 5
-  m_Name: style_dd
+  m_Name: strategy_dd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5336,7 +5337,7 @@ GameObject:
   - component: {fileID: 2044198349}
   - component: {fileID: 2044198348}
   m_Layer: 5
-  m_Name: class_dd
+  m_Name: classType_dd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

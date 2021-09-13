@@ -7,18 +7,21 @@ using TMPDropdown = TMPro.TMP_Dropdown;
 using OptionData = TMPro.TMP_Dropdown.OptionData;
 
 /// <summary>
-/// Handles drop downs.
+/// Handles populating the drop downs dynamically.
 /// </summary>
 public class Menu : MonoBehaviour {
 
 	/// <summary> level </summary>
 	public GameObject level_dd;
 	/// <summary> playstyle </summary>
-	public GameObject dropdown2;
+	public GameObject strategy_dd;
 	/// <summary> class </summary>
-	public GameObject dropdown3;
+	public GameObject classType_dd;
 	/// <summary> checkpoint </summary>
 	public GameObject checkpoint_dd;
+
+	private LevelModelLoader levelLoader;
+	private StrategyModelLoader strategyLoader;
 
 	// provided on data load
 	private List<LevelModel> levels;
@@ -37,8 +40,8 @@ public class Menu : MonoBehaviour {
 		bool result = true;
 
 		if (level_dd == null) { result = false; }
-		if (dropdown2 == null) { result = false; }
-		if (dropdown3 == null) { result = false; }
+		if (strategy_dd == null) { result = false; }
+		if (classType_dd == null) { result = false; }
 		if (checkpoint_dd == null) { result = false; }
 
 		if (!result) {
@@ -50,15 +53,19 @@ public class Menu : MonoBehaviour {
 	/// Dataservice calls this
 	/// </summary>
 	/// <param name="levels"></param>
-	public void populateMenu(List<LevelModel> levels) {
-		updateLevelDropdown(levels);
+	public void populateMenu(LevelModelLoader levelLoader, StrategyModelLoader strategyLoader) {
+		if (levelLoader != null || strategyLoader != null) {
+			this.levelLoader = levelLoader;
+			this.strategyLoader = strategyLoader;
+			updateLevelDropdown(levelLoader.levels);
+		}
 	}
 
 	private void updateLevelDropdown(List<LevelModel> levels) {
 		TMPDropdown[] ddList = level_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		if (dd != null && dd && levels != null && levels.Count > 0) {
-			this.levels = levels;
+
 			// get level name as list
 			List<string> levelNames = new List<string>();
 			levels.ForEach(level => {
@@ -66,10 +73,14 @@ public class Menu : MonoBehaviour {
 			});
 
 			addToDropDown(dd, levelNames);
+			// force selected checkpoint on first pass
+			UpdateCheckpointDropdowns(0);
+			UpdateStrategyDropdowns(0);
 
-			// update other drop downs on selection
+			// update other drop downs on future selection
 			dd.onValueChanged.AddListener(delegate {
 				UpdateCheckpointDropdowns(dd.value);
+				UpdateStrategyDropdowns(dd.value);
 			});
 		} else {
 			Debug.Log("updateLevelDropdown failed, dd null");
@@ -77,24 +88,53 @@ public class Menu : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Strategy is also aka playstyle for the level
+	/// Checkpoints available reflects the selected level
 	/// </summary>
-	/// <param name="selectedLevelIndex"></param>
-	private void UpdateCheckpointDropdowns(int selectedLevelIndex) {
+	/// <param name="selectedIndex"></param>
+	private void UpdateCheckpointDropdowns(int selectedIndex) {
 		TMPDropdown[] ddList = checkpoint_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		if (dd != null && dd) {
 
-			if(levels != null) {
+			if (levelLoader != null) {
 				// pull the play style based on the level name
-				LevelModel selectedLevel = levels[selectedLevelIndex];
-				if(selectedLevel != null) {
+				LevelModel selectedLevel = levelLoader.levels[selectedIndex];
+				if (selectedLevel != null) {
 					List<string> checkpoints = selectedLevel.checkpoints;
 					addToDropDown(dd, checkpoints);
 				}
 			}
 		} else {
 			Debug.Log("updatePlaystyleDropdown failed, dd null");
+		}
+	}
+
+	/// <summary>
+	/// Strategy available reflects the selected level
+	/// </summary>
+	/// <param name="selectedIndex"></param>
+	private void UpdateStrategyDropdowns(int selectedIndex) {
+		TMPDropdown[] ddList = strategy_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd = ddList[0];
+		if (dd != null && dd) {
+
+			if (levelLoader != null) {
+				// pull the play style based on the level name
+				LevelModel selectedLevel = levelLoader.levels[selectedIndex];
+				if (selectedLevel != null) {
+					if (strategyLoader != null) {
+						List<string> strategies = strategyLoader.getStrategyNamesByLevel(selectedLevel.name);
+						addToDropDown(dd, strategies);
+
+					} else {
+						Debug.Log("UpdateStrategyDropdowns failed, strategyLoader null");
+					}
+				} else {
+					Debug.Log("UpdateStrategyDropdowns failed, selectedLevel null");
+				}
+			}
+		} else {
+			Debug.Log("UpdateStrategyDropdowns, dd null");
 		}
 	}
 

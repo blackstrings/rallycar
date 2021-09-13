@@ -7,54 +7,91 @@ using UnityEngine.Networking;
 public class DataService : MonoBehaviour {
 
 	private LevelModelLoader levelLoader;
-	private List<LevelModel> levels;
-	private List<StrategyModel> strategies;
+	private StrategyModelLoader strategyLoader;
 
 	// ---- defaults ---- //
 	public TextAsset defaultLevelJson;
+	public TextAsset defaultStrategyJson;
 
 	public Menu menu;
 
 
 	// Start is called before the first frame update
 	void Start() {
-		if (!defaultLevelJson) {
+		if (!defaultLevelJson || !defaultStrategyJson) {
 			throw new UnityException("DataService failed to load, default json not referenced");
 		}
 
 		menu = GetComponent<Menu>();
 		if (menu) {
-			StartCoroutine(LoadGameData());
+			StartCoroutine(LoadAllGameData());
 		} else {
 			throw new UnityException("DataService start failed, menu null");
 		}
 	}
 
-	IEnumerator LoadGameData() {
-		Coroutine a = StartCoroutine(getGameData());
-		//Coroutine b = StartCoroutine(getStrategyData());
+	IEnumerator LoadAllGameData() {
+		Coroutine a = StartCoroutine(loadLevelData());
+		Coroutine b = StartCoroutine(loadStrategyData());
 
 		yield return a;
-		//yield return b;
+		yield return b;
 
-		if (levels != null) {
-			menu.populateMenu(levels);
+		if (levelLoader != null || strategyLoader != null) {
+			menu.populateMenu(levelLoader, strategyLoader);
 		} else {
 			Debug.Log("menu not popluated, levels null");
 		}
 	}
 
-	//IEnumerator getStrategyData() {
+	IEnumerator loadStrategyData() {
+		string url = "http://xailao.com/gamename/strategy";
+		//string url = query;
 
-	//}
+		UnityWebRequest www = getWebRequest(url, null);
+		yield return www.SendWebRequest();
+
+		string gameDataJson;
+		if (www.result == UnityWebRequest.Result.ConnectionError) {
+			Debug.Log(www.error);
+			Debug.Log("Game network data failed using default strategy data");
+			gameDataJson = defaultStrategyJson.text;
+
+		} else {
+			Debug.Log("Game network load all strategy success");
+			//Debug.Log(www.downloadHandler.text);
+			gameDataJson = www.downloadHandler.text;
+		}
+
+		DeserializeStrategyData(gameDataJson);
+	}
 
 	/// <summary>
 	/// If the network is down, it'll fallback to the gamedata build with the version.
 	/// </summary>
-	IEnumerator getGameData() {
-		string url = "http://xailao.com/games/poplopoly/retreive.php?query=top10";
+	IEnumerator loadLevelData() {
+		string url = "http://xailao.com/gamename/level";
 		//string url = query;
 
+		UnityWebRequest www = getWebRequest(url, null);
+		yield return www.SendWebRequest();
+
+		string gameDataJson;
+		if (www.result == UnityWebRequest.Result.ConnectionError) {
+			Debug.Log(www.error);
+			Debug.Log("Game network data failed using default level data");
+			gameDataJson = defaultLevelJson.text;
+
+		} else {
+			Debug.Log("Game network load all level data success");
+			//Debug.Log(www.downloadHandler.text);
+			gameDataJson = www.downloadHandler.text;
+		}
+
+		DeserializeLevelData(gameDataJson);
+	}
+
+	private UnityWebRequest getWebRequest(string url, Dictionary<string, string> hash) {
 		//json data - works with only UnityWebRequest
 		//string jstr = "{\'name\':\'john\'}";
 
@@ -65,8 +102,8 @@ public class DataService : MonoBehaviour {
 		//f.AddField("user", "222-0001");
 
 		// Hash data -works with only UnityWebRequest
-		Dictionary<string, string> hash = new Dictionary<string, string>();
-		hash.Add("name", "john");
+		//Dictionary<string, string> hash = new Dictionary<string, string>();
+		//hash.Add("name", "john");
 
 		UnityWebRequest www = UnityWebRequest.Post(url, hash);
 		//UnityWebRequest www = UnityWebRequest.Get(url);
@@ -74,50 +111,25 @@ public class DataService : MonoBehaviour {
 		//www.SetRequestHeader("Content-Type", "text/json");
 
 		www.downloadHandler = new DownloadHandlerBuffer();
-
-		yield return www.SendWebRequest();
-
-		string gameDataJson;
-		if (www.result == UnityWebRequest.Result.ConnectionError) {
-			Debug.Log(www.error);
-			Debug.Log("Game network data failed using default game data");
-			gameDataJson = getDefaultGameData();
-
-		} else {
-			Debug.Log("Game network data success");
-			Debug.Log(www.downloadHandler.text);
-			gameDataJson = www.downloadHandler.text;
-		}
-
-		levels = DeserializeLevelData(gameDataJson);
-
-		// wait on all data before populating the menu
-
+		return www;
 	}
 
-	private string getDefaultGameData() {
-		return defaultLevelJson.text;
-	}
-
-	private List<LevelModel> DeserializeLevelData(string gameDataJson) {
+	private void DeserializeLevelData(string gameDataJson) {
 		if (gameDataJson != null && gameDataJson.Length > 0) {
 			levelLoader = JsonConvert.DeserializeObject<LevelModelLoader>(gameDataJson);
-			if (levelLoader != null) {
-				return levelLoader.levels;
-			} else {
+			if (levelLoader == null) {
 				throw new UnityException("levelLoader null");
 			}
 		}
-		Debug.Log("deserializeLevelData failed, gameDataJson null");
-		return null;
 	}
 
-	public List<LevelModel> getLevels() {
-		if (levels != null && levels.Count > 0) {
-			return levels;
-		} else {
-			Debug.LogWarning("getLevels failed, levels null");
-			return null;
+	private void DeserializeStrategyData(string json) {
+		if (json != null && json.Length > 0) {
+			strategyLoader = JsonConvert.DeserializeObject<StrategyModelLoader>(json);
+			if (strategyLoader == null) {
+				throw new UnityException("strategyLoader null");
+			}
 		}
 	}
+
 }

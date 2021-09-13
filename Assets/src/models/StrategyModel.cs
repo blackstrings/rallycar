@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StrategyModel {
-	public string level;
-	public string name;
+	public string levelName;
+	public string strategyName;
 	public List<string> classTypes;
 }
