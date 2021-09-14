@@ -76,6 +76,7 @@ public class Menu : MonoBehaviour {
 			// force selected checkpoint on first pass
 			UpdateCheckpointDropdowns(0);
 			UpdateStrategyDropdowns(0);
+			UpdateClassTypeDropdowns(0);
 
 			// update other drop downs on future selection
 			dd.onValueChanged.AddListener(delegate {
@@ -133,8 +134,41 @@ public class Menu : MonoBehaviour {
 					Debug.Log("UpdateStrategyDropdowns failed, selectedLevel null");
 				}
 			}
+
+			// when strategy selected update the class
+			dd.onValueChanged.AddListener(delegate {
+				UpdateClassTypeDropdowns(dd.value);
+			});
+
 		} else {
 			Debug.Log("UpdateStrategyDropdowns, dd null");
+		}
+	}
+
+	/// <summary>
+	/// Strategy available reflects the selected level
+	/// </summary>
+	/// <param name="selectedStrategyIndex"></param>
+	private void UpdateClassTypeDropdowns(int selectedStrategyIndex) {
+		TMPDropdown[] ddList = classType_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd = ddList[0];
+		if (dd != null && dd) {
+
+			if (strategyLoader != null) {
+				// pull the play style based on the level name
+				StrategyModel selectedStrategy = strategyLoader.strategies[selectedStrategyIndex];
+				if (selectedStrategy != null) {
+					List<string> classTypes = selectedStrategy.classTypes;
+					addToDropDown(dd, classTypes);
+
+				} else {
+					Debug.Log("UpdateClassTypeDropdowns failed, selectedLevel null");
+				}
+			} else {
+				Debug.Log("UpdateClassTypeDropdowns failed, strategyLoader null");
+			}
+		} else {
+			Debug.Log("UpdateClassTypeDropdowns, dd null");
 		}
 	}
 

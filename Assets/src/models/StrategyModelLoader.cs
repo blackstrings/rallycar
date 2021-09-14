@@ -23,7 +23,7 @@ public class StrategyModelLoader {
 
 	public List<string> getStrategyNamesByLevel(string level) {
 		List<string> stratNames = new List<string>();
-		if(strategies != null && strategies.Count > 0) {
+		if (strategies != null && strategies.Count > 0) {
 			strategies.ForEach(strat => {
 				if (strat.levelName.Equals(level)) {
 					stratNames.Add(strat.strategyName);
@@ -33,5 +33,23 @@ public class StrategyModelLoader {
 			Debug.Log("getStrategyNamesByLevel failed, strategies null");
 		}
 		return stratNames;
+	}
+
+	public List<string> getStrategyClassTypesByLevel(string level, string strategyName) {
+		List<string> classTypes = null;
+		if (strategies != null && strategies.Count > 0) {
+			strategies.ForEach(strat => {
+				if (strat.levelName.Equals(level)) {
+					if (strat.strategyName.Equals(strategyName)) {
+						Debug.Log("getStrategyClassTypesByLevel success");
+						classTypes = strat.classTypes;
+						return;
+					}
+				}
+			});
+		} else {
+			Debug.Log("getStrategyClassTypesByLevel failed, strategies null");
+		}
+		return classTypes;
 	}
 }
