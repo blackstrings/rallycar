@@ -11,25 +11,15 @@ using OptionData = TMPro.TMP_Dropdown.OptionData;
 /// </summary>
 public class Menu : MonoBehaviour {
 
-	/// <summary> level </summary>
 	public GameObject level_dd;
-	/// <summary> playstyle </summary>
 	public GameObject strategy_dd;
-	/// <summary> class </summary>
 	public GameObject classType_dd;
-	/// <summary> checkpoint </summary>
 	public GameObject checkpoint_dd;
 
 	private LevelModelLoader levelLoader;
 	private StrategyModelLoader strategyLoader;
 
-	// provided on data load
-	private List<LevelModel> levels;
-
-	// level to playstyle mapping
-	private Dictionary<string, List<LevelModel>> allLevelModelMap = new Dictionary<string, List<LevelModel>>();
-	// playstyle to class
-	//private Dictionary<string, List<string>> levelPlaystylesMap = new Dictionary<string, List<string>>();
+	private LevelConfig levelConfig = new LevelConfig();
 
 	// Start is called before the first frame update
 	void Start() {
@@ -47,6 +37,27 @@ public class Menu : MonoBehaviour {
 		if (!result) {
 			throw new UnityException("invalid setup");
 		}
+	}
+
+	/// <summary>
+	/// update on start, reread the new values into the config
+	/// </summary>
+	private void updateLevelConfig() {
+		TMPDropdown[] ddList = level_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd = ddList[0];
+		levelConfig.levelName = dd.options[dd.value].text;
+
+		TMPDropdown[] ddList1 = strategy_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd1 = ddList1[0];
+		levelConfig.strategyName = dd1.options[dd1.value].text;
+
+		TMPDropdown[] ddList2 = checkpoint_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd2 = ddList2[0];
+		levelConfig.startingCheckpointName = dd2.options[dd2.value].text;
+
+		TMPDropdown[] ddList3 = classType_dd.GetComponents<TMPDropdown>();
+		TMPDropdown dd3 = ddList3[0];
+		levelConfig.playerClassTypeName = dd3.options[dd3.value].text;
 	}
 
 	/// <summary>
@@ -73,10 +84,13 @@ public class Menu : MonoBehaviour {
 			});
 
 			addToDropDown(dd, levelNames);
+
 			// force selected checkpoint on first pass
 			UpdateCheckpointDropdowns(0);
 			UpdateStrategyDropdowns(0);
 			UpdateClassTypeDropdowns(0);
+
+			updateLevelConfig();
 
 			// update other drop downs on future selection
 			dd.onValueChanged.AddListener(delegate {
@@ -146,7 +160,7 @@ public class Menu : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Strategy available reflects the selected level
+	/// Classtypes available reflects the selected level and selected strategy
 	/// </summary>
 	/// <param name="selectedStrategyIndex"></param>
 	private void UpdateClassTypeDropdowns(int selectedStrategyIndex) {
@@ -196,6 +210,11 @@ public class Menu : MonoBehaviour {
 
 	// buttone click event to go to level fight
 	public void GoToBossFight() {
+		updateLevelConfig();
+		Debug.Log(levelConfig.levelName + " : "
+			+ levelConfig.strategyName + " : "
+			+ levelConfig.startingCheckpointName + " : "
+			+ levelConfig.playerClassTypeName);
 		SceneManager.LoadScene(1);
 	}
 }
