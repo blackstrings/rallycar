@@ -895,7 +895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2764174325830030153, guid: 286806f628ee146a1a8a79bb83bbb74d, type: 3}
       propertyPath: id
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2764174325830030153, guid: 286806f628ee146a1a8a79bb83bbb74d, type: 3}
       propertyPath: playerActionRespondJson
@@ -1416,6 +1416,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_dps_pf
       objectReference: {fileID: 0}
+    - target: {fileID: 2764174325830030158, guid: 79e48b0084bca4517942cbc41f02eec0, type: 3}
+      propertyPath: m_TagString
+      value: mainPlayer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79e48b0084bca4517942cbc41f02eec0, type: 3}
 --- !u!1 &2032480848
@@ -1560,6 +1564,10 @@ PrefabInstance:
     - target: {fileID: 2764174325830030152, guid: 1854ee43f002b4991bd6d90e1ab3123b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2764174325830030153, guid: 1854ee43f002b4991bd6d90e1ab3123b, type: 3}
+      propertyPath: id
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2764174325830030153, guid: 1854ee43f002b4991bd6d90e1ab3123b, type: 3}
       propertyPath: playerActionRespondJson

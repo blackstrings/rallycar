@@ -132,6 +132,7 @@ public class Boss : MonoBehaviour
 				// give time for attack animation
 				Debug.Log("playing boss animation action" + action.name);
 				// perform the action todo
+				EventManager.alertBossActionCasted(action);
 				yield return new WaitForSeconds(action.castAnimationTime / debugSpeedUpCast);
 
 

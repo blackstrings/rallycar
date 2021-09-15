@@ -215,6 +215,9 @@ public class Menu : MonoBehaviour {
 			+ levelConfig.strategyName + " : "
 			+ levelConfig.startingCheckpointName + " : "
 			+ levelConfig.playerClassTypeName);
+
+		// todo main player id hack
+		//GameManager.Instance.mainPlayerId = 1;
 		SceneManager.LoadScene(1);
 	}
 }
