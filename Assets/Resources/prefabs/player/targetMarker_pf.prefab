@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1081815440812363972}
   m_Layer: 0
   m_Name: targetMarker_pf
-  m_TagString: Untagged
+  m_TagString: goToMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,7 +85,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 85fb842de337b4dfb8c5a4ee3d471bd8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b01107097ab9241818e3c3bbe1c1649c, type: 2}
+      objectReference: {fileID: 2100000, guid: 9e02edd5a0cf146e6a5073b9dae8e647, type: 2}
     - target: {fileID: 919132149155446097, guid: 85fb842de337b4dfb8c5a4ee3d471bd8, type: 3}
       propertyPath: m_Name
       value: goToMarker_mesh

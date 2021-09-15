@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2959dd833730c4a69beaafa38b14f7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goToMarker_pf: {fileID: 6304877007627628837, guid: 64d8fcc38f8684b75b223e6b4e955b45, type: 3}
 --- !u!4 &492175136
 Transform:
   m_ObjectHideFlags: 0
@@ -1407,6 +1408,10 @@ PrefabInstance:
       propertyPath: isAI
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2764174325830030153, guid: 79e48b0084bca4517942cbc41f02eec0, type: 3}
+      propertyPath: playerActionRespondJson
+      value: 
+      objectReference: {fileID: 4900000, guid: df6c2898e1105453da98d7598e660a68, type: 3}
     - target: {fileID: 2764174325830030158, guid: 79e48b0084bca4517942cbc41f02eec0, type: 3}
       propertyPath: m_Name
       value: player_dps_pf

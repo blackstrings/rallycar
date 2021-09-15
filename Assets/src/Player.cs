@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
 	/// <summary>
 	/// used to identify the player
 	/// </summary>
@@ -29,25 +28,62 @@ public class Player : MonoBehaviour
 	private GameObject bossGO;
 	private ClassType classType;
 
+	/// <summary>
+	/// Reference when the player is a real human player
+	/// </summary>
+	private GameObject goToMarker;
+
 	void Awake() {
-		if(isAI) {
+		if (isAI) {
+			Debug.Log("is ai");
 			SetupAI();
+		} else {
+			loadDefaultPlayerAction();
 		}
 	}
 
 	// Start is called before the first frame update
-	void Start()
-    {
+	void Start() {
 		bossGO = GameObject.FindGameObjectWithTag("boss");
-		if(!bossGO)
-        {
+		if (!bossGO) {
 			throw new UnityException("player " + id + " can't find boss gameobject");
-        }
+		}
+
+		if (!isAI) {
+			goToMarker = GameObject.FindGameObjectWithTag("goToMarker");
+			if (!goToMarker) {
+				Debug.Log("goToMarker not found");
+				// need to load dynamically player actions
+			}
+			EventManager.onBossUpcomingActionAlert += placePlayerGroundMarker;
+		}
+	}
+
+	private void placePlayerGroundMarker(ActionQueue bossAction) {
+		for (int i = 0; i < actionQueues.Count; i++) {
+			if (actionQueues[i].id == bossAction.id) {
+				Debug.Log("player action found for marker");
+				playerAction = actionQueues[i];
+				break;
+			}
+		}
+		if (playerAction != null) {
+			if (goToMarker != null) {
+				Debug.Log("going to marker");
+				goToMarker.transform.position = playerAction.getGoToPosition();
+			} else {
+				Debug.Log("goToMarker null");
+				goToMarker = GameObject.FindGameObjectWithTag("goToMarker");
+				goToMarker.transform.position = playerAction.getGoToPosition();
+			}
+		} else {
+			Debug.Log("playerAction null");
+		}
 	}
 
 	// define the player stats
 	void load(ClassType classType, int id) {
-		if(!(classType.ToString().Equals(""))){
+		if (!(classType.ToString().Equals(""))) {
 			this.classType = classType;
 		} else {
 			throw new UnityException("load failed, classType not supported");
@@ -55,7 +91,7 @@ public class Player : MonoBehaviour
 	}
 
 	public void Reset() {
-		
+
 	}
 
 	/// <summary>
@@ -73,6 +109,10 @@ public class Player : MonoBehaviour
 	private void SetupAI() {
 		// listen to boss action alert
 		EventManager.onBossUpcomingActionAlert += positionPlayerViaAI;
+		loadDefaultPlayerAction();
+	}
+
+	private void loadDefaultPlayerAction() {
 		// load scripted json from referenced text file
 		actionLoader = JsonUtility.FromJson<ActionQueueLoader>(playerActionRespondJson.text);
 		// get the actions from the loader class
@@ -83,12 +123,13 @@ public class Player : MonoBehaviour
 
 	private void OnDestroy() {
 		EventManager.onBossUpcomingActionAlert -= positionPlayerViaAI;
+		EventManager.onBossUpcomingActionAlert -= placePlayerGroundMarker;
 	}
 
 	public void positionPlayerViaAI(ActionQueue bossAction) {
 		// match boss action name as a map to get the action location to take
 		playerAction = null;
-		if(bossAction != null) {
+		if (bossAction != null) {
 			// if there is currPos still available, teleport here quickly before
 			// moving forward to the next destination
 			if (currPos != Vector3.zero) {
@@ -123,16 +164,15 @@ public class Player : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 	}
 
-	private void stopPrevMoveTo()
-    {
+	private void stopPrevMoveTo() {
 		StopCoroutine("MoveOverSeconds");
-    }
+	}
 
 	private void moveTo(Vector3 newPosition, string faceDirectionAuto) {
-		StartCoroutine(MoveOverSeconds (newPosition, 2f, faceDirectionAuto));
+		StartCoroutine(MoveOverSeconds(newPosition, 2f, faceDirectionAuto));
 	}
-  
-  	/*private IEnumerator MoveOverSpeed(Vector3 end, float speed) {
+
+	/*private IEnumerator MoveOverSpeed(Vector3 end, float speed) {
 		// speed should be 1 unit per second
 		while (transform.position != end) {
 			transform.position = Vector3.MoveTowards(transform.position, end, speed * Time.deltaTime);
@@ -146,29 +186,26 @@ public class Player : MonoBehaviour
 		Vector3 startingPos = transform.position;
 		while (elapsedTime < seconds) {
 			transform.position = Vector3.Lerp(startingPos, end, (elapsedTime / seconds));
-			faceDirectionOfTravel(end-startingPos);
+			faceDirectionOfTravel(end - startingPos);
 			elapsedTime += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 		transform.position = end;
 
 		// hard set the players facing direction upon reaching location
-		if(faceDirectionAuto != null)
-        {
-			if (faceDirectionAuto.Equals("boss"))
-			{
+		if (faceDirectionAuto != null) {
+			if (faceDirectionAuto.Equals("boss")) {
 				Vector3 bossPos = bossGO.transform.position;
 				bossPos.y = 0;  // y should be zero
 				end.y = 0;
 				faceDirection(bossPos - end);
-			} else if(faceDirectionAuto.Equals("away"))
-			{
+			} else if (faceDirectionAuto.Equals("away")) {
 				Vector3 bossPos = bossGO.transform.position;
 				bossPos.y = 0;  // y should be zero
 				end.y = 0;
 				faceDirection(end - bossPos);
 			}
-        }
+		}
 	}
 
 	private void faceDirectionOfTravel(Vector3 direction) {

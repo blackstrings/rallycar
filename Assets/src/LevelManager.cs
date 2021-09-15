@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 public class LevelManager : MonoBehaviour {
 	private Boss boss;
 
+	public GameObject goToMarker_pf;
+	private GameObject goToMarker;
+
 	// Start is called before the first frame update
 	void Start() {
 		GameObject bossGO = GameObject.FindGameObjectsWithTag("boss")[0];
@@ -20,6 +23,9 @@ public class LevelManager : MonoBehaviour {
 		} else {
 			Debug.Log("boss componen not found");
 		}
+
+		goToMarker = GameObject.Instantiate<GameObject>(goToMarker_pf);
+		goToMarker.tag = "goToMarker";
 	}
 
 	IEnumerator Init() {
