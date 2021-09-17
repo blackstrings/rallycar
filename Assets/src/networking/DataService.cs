@@ -70,8 +70,8 @@ public class DataService : MonoBehaviour {
 	/// If the network is down, it'll fallback to the gamedata build with the version.
 	/// </summary>
 	IEnumerator loadLevelData() {
-		string url = "http://xailao.com/gamename/level";
-		//string url = query;
+		// string url = "http://www.rainkey.io/simulations/1";
+		string url = "query";
 
 		UnityWebRequest www = getWebRequest(url, null);
 		yield return www.SendWebRequest();
@@ -85,6 +85,7 @@ public class DataService : MonoBehaviour {
 		} else {
 			Debug.Log("Game network load all level data success");
 			//Debug.Log(www.downloadHandler.text);
+			Debug.Log(www.result);
 			gameDataJson = www.downloadHandler.text;
 		}
 
