@@ -69,34 +69,40 @@ public class Menu : MonoBehaviour {
 			this.levelLoader = levelLoader;
 			this.strategyLoader = strategyLoader;
 			updateLevelDropdown(levelLoader.levels);
+		} else {
+			Debug.LogWarning("populateMenu failed, levelLoader or strategyLoader null");
 		}
 	}
 
 	private void updateLevelDropdown(List<LevelModel> levels) {
 		TMPDropdown[] ddList = level_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
-		if (dd != null && dd && levels != null && levels.Count > 0) {
+		if (dd) {
+			if (levels != null && levels.Count > 0) {
+				// get level name as list
+				List<string> levelNames = new List<string>();
+				levels.ForEach(level => {
+					levelNames.Add(level.name);
+				});
 
-			// get level name as list
-			List<string> levelNames = new List<string>();
-			levels.ForEach(level => {
-				levelNames.Add(level.name);
-			});
+				addToDropDown(dd, levelNames);
 
-			addToDropDown(dd, levelNames);
+				// force selected checkpoint on first pass
+				UpdateCheckpointDropdowns(0);
+				UpdateStrategyDropdowns(0);
+				UpdateClassTypeDropdowns(0);
 
-			// force selected checkpoint on first pass
-			UpdateCheckpointDropdowns(0);
-			UpdateStrategyDropdowns(0);
-			UpdateClassTypeDropdowns(0);
+				updateLevelConfig();
 
-			updateLevelConfig();
+				// update other drop downs on future selection
+				dd.onValueChanged.AddListener(delegate {
+					UpdateCheckpointDropdowns(dd.value);
+					UpdateStrategyDropdowns(dd.value);
+				});
+			} else {
+				Debug.Log("updateLevelDropdown failed, level null or empty");
+			}
 
-			// update other drop downs on future selection
-			dd.onValueChanged.AddListener(delegate {
-				UpdateCheckpointDropdowns(dd.value);
-				UpdateStrategyDropdowns(dd.value);
-			});
 		} else {
 			Debug.Log("updateLevelDropdown failed, dd null");
 		}

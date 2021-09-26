@@ -54,11 +54,11 @@ public class DataService : MonoBehaviour {
 		string gameDataJson;
 		if (www.result == UnityWebRequest.Result.ConnectionError) {
 			Debug.Log(www.error);
-			Debug.Log("Game network data failed using default strategy data");
+			Debug.Log("Load Strategy data failed using default strategy data");
 			gameDataJson = defaultStrategyJson.text;
 
 		} else {
-			Debug.Log("Game network load all strategy success");
+			Debug.Log("Load Strategy data success");
 			//Debug.Log(www.downloadHandler.text);
 			gameDataJson = www.downloadHandler.text;
 		}
@@ -70,8 +70,9 @@ public class DataService : MonoBehaviour {
 	/// If the network is down, it'll fallback to the gamedata build with the version.
 	/// </summary>
 	IEnumerator loadLevelData() {
-		// string url = "http://www.rainkey.io/simulations/1";
-		string url = "query";
+		Debug.Log("Loading boss level data");
+		string url = "http://www.noApiYet.com";
+		// string url = "http://www.rainkey.io/simulations/1.json";
 
 		UnityWebRequest www = getWebRequest(url, null);
 		yield return www.SendWebRequest();
@@ -79,13 +80,11 @@ public class DataService : MonoBehaviour {
 		string gameDataJson;
 		if (www.result == UnityWebRequest.Result.ConnectionError) {
 			Debug.Log(www.error);
-			Debug.Log("Game network data failed using default level data");
+			Debug.Log("Level data load failed using default level data");
 			gameDataJson = defaultLevelJson.text;
 
 		} else {
-			Debug.Log("Game network load all level data success");
-			//Debug.Log(www.downloadHandler.text);
-			Debug.Log(www.result);
+			Debug.Log("Level data loaded success");
 			gameDataJson = www.downloadHandler.text;
 		}
 
@@ -106,7 +105,8 @@ public class DataService : MonoBehaviour {
 		//Dictionary<string, string> hash = new Dictionary<string, string>();
 		//hash.Add("name", "john");
 
-		UnityWebRequest www = UnityWebRequest.Post(url, hash);
+		// if not getting correct data, make sure GET POST UPDATE are correct
+		UnityWebRequest www = UnityWebRequest.Get(url);
 		//UnityWebRequest www = UnityWebRequest.Get(url);
 		www.SetRequestHeader("Content-Type", "application/json");
 		//www.SetRequestHeader("Content-Type", "text/json");
