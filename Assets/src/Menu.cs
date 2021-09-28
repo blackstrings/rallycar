@@ -69,6 +69,7 @@ public class Menu : MonoBehaviour {
 			this.levelLoader = levelLoader;
 			this.strategyLoader = strategyLoader;
 
+			// brute force boss data
 			GameManager.Instance.actionLoader = bossActionQueueLoader;
 
 			updateLevelDropdown(levelLoader.levels);

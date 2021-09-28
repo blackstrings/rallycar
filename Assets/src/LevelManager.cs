@@ -55,7 +55,8 @@ public class LevelManager : MonoBehaviour {
 			ActionQueueLoader loader = GameManager.Instance.actionLoader;
 			if (loader != null) {
 				Debug.Log("Boss action queues available, Using boss action from network");
-				boss.StartRound(new List<ActionQueue>(loader.actionsQueues));
+				// note: change back to null to use boss data from network
+				boss.StartRound(loader);
 			} else {
 				Debug.LogWarning("boss action failed, passing null to start round");
 				boss.StartRound(null);

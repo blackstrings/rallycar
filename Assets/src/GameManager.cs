@@ -11,7 +11,9 @@ public class GameManager : Singleton<GameManager>
 
 
     // (Optional) Prevent non-singleton constructor use.
-    protected GameManager() { }
+    protected GameManager() {
+		actionLoader = null;
+	}
 
 	// Start is called before the first frame update
 	void Start()

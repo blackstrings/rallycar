@@ -62,9 +62,9 @@
         {
             "name": "brambels",
             "actionOrderIds": [
-                [ 1 ],
                 [ 2 ],
-                [ 3 ]
+                [ 3 ],
+                [ 2 ]
             ]
         },
         {
@@ -72,13 +72,13 @@
             "actionOrderIds": [
                 [ 1 ],
                 [ 2 ],
-                [ 3 ]
+                [ 1 ]
             ]
         },
         {
             "name": "end",
             "actionOrderIds": [
-                [ 1000 ]
+                [ 100 ]
             ]
         }
 

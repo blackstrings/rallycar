@@ -40,25 +40,29 @@ public class Checkpoint {
 			//Debug.Log("posible Rows: " + actionOrderIds.Count);
 			actionOrderIds.ForEach(idsList => {
 
-				if (idsList.Count != 0) {
+			if (idsList.Count != 0) {
 
-					if (idsList.Count > 1) {
-						// it's possible a list of random actions are returned
-						List<ActionQueue> actions = pickRandomActions(idsList, allActionsDict);
-						if (actions.Count > 0) {
-							actions.ForEach(action => {
-								finalActionList.Add(action);
-							});
-						} else {
-							Debug.Log("failed to add randomized action, count is 0");
-						}
-
+				if (idsList.Count > 1) {
+					// it's possible a list of random actions are returned
+					List<ActionQueue> actions = pickRandomActions(idsList, allActionsDict);
+					if (actions.Count > 0) {
+						actions.ForEach(action => {
+							finalActionList.Add(action);
+						});
 					} else {
+						Debug.Log("failed to add randomized action, count is 0");
+					}
+
+				} else {
+					if (allActionsDict.ContainsKey(idsList[0])) {
 						ActionQueue action = allActionsDict[idsList[0]];
 						if (action != null) {
 							finalActionList.Add(action);
 						} else {
 							Debug.Log("No action found for id: " + idsList[0]);
+						}
+					} else {
+						Debug.LogWarning("action id " + idsList[0] + " not exist in dictionary");
 						}
 					}
 

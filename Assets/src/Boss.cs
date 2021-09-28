@@ -6,8 +6,7 @@ using Newtonsoft.Json;
 /// <summary>
 /// Boss player
 /// </summary>
-public class Boss : MonoBehaviour
-{
+public class Boss : MonoBehaviour {
 
 	// not the best way to load, as you can't change once at runtime
 	// but for now it'll do, as we'll want to load using www from dataserver
@@ -17,7 +16,7 @@ public class Boss : MonoBehaviour
 	public TextAsset defaultBossScript;
 
 	// for referencing all the action
-	private List<ActionQueue> allActions;
+	private List<ActionQueue> allActions = new List<ActionQueue>();
 
 	// keep it at 1 for normal speed, increment betwee 2-6 to speed up fight
 	public float debugSpeedUpCast = 1;
@@ -26,17 +25,16 @@ public class Boss : MonoBehaviour
 	public bool canPlayNextAction = true;
 
 	// Start is called before the first frame update
-	void Start()
-    {
-	
-    }
+	void Start() {
+
+	}
 
 	/// <summary>
 	/// Begins the round. Called by the LevelManager.
 	/// </summary>
-	public void StartRound(List<ActionQueue> actionQueues) {
-		LoadActionQueues(actionQueues);
-		if(validate()) {
+	public void StartRound(ActionQueueLoader loader) {
+		LoadActionQueues(loader);
+		if (validate()) {
 			StartCoroutine(playActions());
 		} else {
 			Debug.LogError("Fail to StartRound, validate failed as Boss has no actions loaded");
@@ -44,7 +42,7 @@ public class Boss : MonoBehaviour
 	}
 
 	private bool validate() {
-		if(allActions.Count > 0) {
+		if (allActions.Count > 0) {
 			return true;
 		}
 		return false;
@@ -53,36 +51,52 @@ public class Boss : MonoBehaviour
 	/// <summary>
 	/// Boss should be fed a boss script data from the network. If not, it will use the default script.
 	/// </summary>
-	private void LoadActionQueues(List<ActionQueue> actionQueues) {
-		if(actionQueues == null) {
+	private void LoadActionQueues(ActionQueueLoader loader) {
+		ActionQueueLoader actionLoader;
+		if (loader == null) {
+			// load json from referenced text file
+			//ActionQueueLoader loader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
 			Debug.Log("No script was loaded, loading default boss action");
-			LoadDefaultScript();
+			actionLoader = JsonConvert.DeserializeObject<ActionQueueLoader>(defaultBossScript.text);
 		} else {
-			this.allActions = actionQueues;
+			actionLoader = loader;
 		}
+		LoadBossAllActionsForRound(actionLoader);
 	}
 
 	/// <summary>
 	/// // todo move to dataService
 	/// If network fails, it will only load the default boss scripts provided with the build.
 	/// </summary>
-	private void LoadDefaultScript() {
-		if(defaultBossScript) {
-
-			// load json from referenced text file
-			//ActionQueueLoader loader = JsonUtility.FromJson<ActionQueueLoader>(defaultBossScript.text);
-			ActionQueueLoader loader = JsonConvert.DeserializeObject<ActionQueueLoader>(defaultBossScript.text);
+	private void LoadBossAllActionsForRound(ActionQueueLoader actionLoader) {
+		if (defaultBossScript) {
 
 			// get the actions from the loader class
-			ActionQueue[] actions = loader.actionsQueues;
+			ActionQueue[] bossAllActionMasterList = actionLoader.actionsQueues;
 
 			// convert array to list for easier use
-			List<ActionQueue> allActionsTemp = new List<ActionQueue>(actions);
+			List<ActionQueue> allActionsTemp = new List<ActionQueue>(bossAllActionMasterList);
 
-			Checkpoint[] allCheckpoints = loader.checkpoints;
+			List<Checkpoint> allCheckpoints = new List<Checkpoint>(actionLoader.checkpoints);
 			//Debug.Log("all phases count: " + allPhases.Length);
 
-			allActions = allCheckpoints[0].GetActionQueues(allActionsTemp);
+			Debug.Log("boss checkpoints count: " + actionLoader.checkpoints.Length);
+
+			// pull all actions from each checkpoint into one major list of actions
+			allCheckpoints.ForEach((Checkpoint cp) => {
+				List<ActionQueue> actions = cp.GetActionQueues(allActionsTemp);
+				if(actions.Count > 0) {
+					actions.ForEach((ActionQueue action) => {
+						ActionQueue a = (ActionQueue)action.Clone();
+						allActions.Add(a);
+					});
+				} else {
+					Debug.LogWarning("actions for checkpoint is null or zero");
+				}
+			});
+
+			// remove this is hardcode just to one checkpoint
+			//allActions = allCheckpoints[0].GetActionQueues(allActionsTemp);
 
 		} else {
 			throw new UnityException("defaultBossScript null and required");
@@ -104,9 +118,9 @@ public class Boss : MonoBehaviour
 	/// </summary>
 	/// <returns></returns>
 	IEnumerator playActions() {
-		while(canPlayNextAction) {
+		while (canPlayNextAction) {
 			//if the action exist
-			if(allActions.Count > 0) {
+			if (allActions.Count > 0) {
 				//yield return new WaitForSeconds(1);
 
 				// get and pop the action out
@@ -125,7 +139,7 @@ public class Boss : MonoBehaviour
 				yield return new WaitForSeconds(action.castTime);
 
 				// delay before actionally attacking
-				if(action.delayTakeAction > 0) {
+				if (action.delayTakeAction > 0) {
 					yield return new WaitForSeconds(action.delayTakeAction);
 				}
 
