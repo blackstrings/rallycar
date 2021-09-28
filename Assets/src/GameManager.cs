@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
 	public int mainPlayerId;
 	public LevelModel selectedLevel = new LevelModel();
+	public ActionQueueLoader actionLoader;
 
 
     // (Optional) Prevent non-singleton constructor use.
@@ -18,10 +19,6 @@ public class GameManager : Singleton<GameManager>
 		DontDestroyOnLoad(this.gameObject);
 	}
 
-	// save data for upcoming level on start
-	public void initSelectedLevel() {
-
-	}
 
 
 }

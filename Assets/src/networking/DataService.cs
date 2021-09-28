@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class DataService : MonoBehaviour {
 
 	private LevelModelLoader levelLoader;
+	private ActionQueueLoader actionLoader;
 	private StrategyModelLoader strategyLoader;
 
 	// ---- defaults ---- //
@@ -31,14 +32,17 @@ public class DataService : MonoBehaviour {
 	}
 
 	IEnumerator LoadAllGameData() {
-		Coroutine a = StartCoroutine(loadLevelData());
+		Coroutine a = StartCoroutine(loadAllLevelData());
 		Coroutine b = StartCoroutine(loadStrategyData());
+		Coroutine c = StartCoroutine(loadBossE9SData());
+
 
 		yield return a;
 		yield return b;
+		yield return c;
 
 		if (levelLoader != null || strategyLoader != null) {
-			menu.populateMenu(levelLoader, strategyLoader);
+			menu.populateMenu(levelLoader, strategyLoader, actionLoader);
 		} else {
 			Debug.Log("menu not popluated, levels null");
 		}
@@ -69,7 +73,7 @@ public class DataService : MonoBehaviour {
 	/// <summary>
 	/// If the network is down, it'll fallback to the gamedata build with the version.
 	/// </summary>
-	IEnumerator loadLevelData() {
+	IEnumerator loadAllLevelData() {
 		Debug.Log("Loading boss level data");
 		string url = "http://www.noApiYet.com";
 		// string url = "http://www.rainkey.io/simulations/1.json";
@@ -89,6 +93,31 @@ public class DataService : MonoBehaviour {
 		}
 
 		DeserializeLevelData(gameDataJson);
+	}
+
+	/// <summary>
+	/// If the network is down, it'll fallback to the gamedata build with the version.
+	/// </summary>
+	IEnumerator loadBossE9SData() {
+		Debug.Log("Loading boss level data");
+		// string url = "http://www.noApiYet.com";
+		string url = "http://www.rainkey.io/simulations/1.json";
+
+		UnityWebRequest www = getWebRequest(url, null);
+		yield return www.SendWebRequest();
+
+		string gameDataJson;
+		if (www.result == UnityWebRequest.Result.ConnectionError) {
+			Debug.Log(www.error);
+			Debug.Log("Boss data load failed using default level data");
+			gameDataJson = defaultLevelJson.text;
+
+		} else {
+			Debug.Log("Boss data loaded success");
+			gameDataJson = www.downloadHandler.text;
+		}
+
+		DeserializeBossE9SData(gameDataJson);
 	}
 
 	private UnityWebRequest getWebRequest(string url, Dictionary<string, string> hash) {
@@ -113,6 +142,15 @@ public class DataService : MonoBehaviour {
 
 		www.downloadHandler = new DownloadHandlerBuffer();
 		return www;
+	}
+
+	private void DeserializeBossE9SData(string gameDataJson) {
+		if (gameDataJson != null && gameDataJson.Length > 0) {
+			actionLoader = JsonConvert.DeserializeObject<ActionQueueLoader>(gameDataJson);
+			if (actionLoader == null) {
+				throw new UnityException("actionLoader null");
+			}
+		}
 	}
 
 	private void DeserializeLevelData(string gameDataJson) {

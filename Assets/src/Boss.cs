@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
     }
 
 	/// <summary>
-	/// Begins the round. Called by the sceneManager.
+	/// Begins the round. Called by the LevelManager.
 	/// </summary>
 	public void StartRound(List<ActionQueue> actionQueues) {
 		LoadActionQueues(actionQueues);

@@ -64,10 +64,13 @@ public class Menu : MonoBehaviour {
 	/// Dataservice calls this
 	/// </summary>
 	/// <param name="levels"></param>
-	public void populateMenu(LevelModelLoader levelLoader, StrategyModelLoader strategyLoader) {
+	public void populateMenu(LevelModelLoader levelLoader, StrategyModelLoader strategyLoader, ActionQueueLoader bossActionQueueLoader) {
 		if (levelLoader != null || strategyLoader != null) {
 			this.levelLoader = levelLoader;
 			this.strategyLoader = strategyLoader;
+
+			GameManager.Instance.actionLoader = bossActionQueueLoader;
+
 			updateLevelDropdown(levelLoader.levels);
 		} else {
 			Debug.LogWarning("populateMenu failed, levelLoader or strategyLoader null");
