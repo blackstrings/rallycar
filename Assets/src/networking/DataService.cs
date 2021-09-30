@@ -14,6 +14,8 @@ public class DataService : MonoBehaviour {
 	public TextAsset defaultLevelJson;
 	public TextAsset defaultStrategyJson;
 
+	public string domain = Application.absoluteURL;
+
 	public Menu menu;
 
 
@@ -100,17 +102,30 @@ public class DataService : MonoBehaviour {
 	/// </summary>
 	IEnumerator loadBossE9SData() {
 		Debug.Log("Loading boss level data");
-		// string url = "http://www.noApiYet.com";
-		string url = "http://www.rainkey.io/simulations/1.json";
+
+		string url = domain + "/simulations/1.json";
+		Debug.Log(url);
 
 		UnityWebRequest www = getWebRequest(url, null);
 		yield return www.SendWebRequest();
 
 		string gameDataJson;
 		if (www.result == UnityWebRequest.Result.ConnectionError) {
-			Debug.Log(www.error);
-			Debug.Log("Boss data load failed using default level data");
-			gameDataJson = defaultLevelJson.text;
+
+			// attempt 2 from prod
+			Debug.Log("attempt 2");
+			url = "http://www.rainkey.io/simulations/1.json";
+			Debug.Log(url);
+			www = getWebRequest(url, null);
+			yield return www.SendWebRequest();
+
+			if (www.result == UnityWebRequest.Result.ConnectionError) {
+				Debug.Log(www.error);
+				gameDataJson = getDefaultE9SData();
+			} else {
+				Debug.Log("Boss data loaded success");
+				gameDataJson = www.downloadHandler.text;
+			}
 
 		} else {
 			Debug.Log("Boss data loaded success");
@@ -118,6 +133,11 @@ public class DataService : MonoBehaviour {
 		}
 
 		DeserializeBossE9SData(gameDataJson);
+	}
+
+	private string getDefaultE9SData() {
+		Debug.Log("Boss data load failed using default level data");
+		return defaultLevelJson.text;
 	}
 
 	private UnityWebRequest getWebRequest(string url, Dictionary<string, string> hash) {

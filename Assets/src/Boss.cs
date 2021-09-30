@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 /// </summary>
 public class Boss : MonoBehaviour {
 
+	public float aiTurnSmoothTime = .1f;
+	private float aiTurnSmoothVelocity = .05f;
+
 	// not the best way to load, as you can't change once at runtime
 	// but for now it'll do, as we'll want to load using www from dataserver
 	/// <summary>
@@ -33,6 +36,10 @@ public class Boss : MonoBehaviour {
 	/// Begins the round. Called by the LevelManager.
 	/// </summary>
 	public void StartRound(ActionQueueLoader loader) {
+		// for debug to load from local files instead of network
+		//Debug.LogWarning("Overriding and loading boss Local data, setting boss loader to null");
+		//loader = null;
+
 		LoadActionQueues(loader);
 		if (validate()) {
 			StartCoroutine(playActions());
@@ -85,7 +92,7 @@ public class Boss : MonoBehaviour {
 			// pull all actions from each checkpoint into one major list of actions
 			allCheckpoints.ForEach((Checkpoint cp) => {
 				List<ActionQueue> actions = cp.GetActionQueues(allActionsTemp);
-				if(actions.Count > 0) {
+				if (actions.Count > 0) {
 					actions.ForEach((ActionQueue action) => {
 						ActionQueue a = (ActionQueue)action.Clone();
 						allActions.Add(a);
@@ -129,12 +136,29 @@ public class Boss : MonoBehaviour {
 				EventManager.alertBossUpcomingAction(action);
 				allActions.RemoveAt(0);
 
+				// move or animate the boss to position
+				float moveSpeed = action.goToSpeed;
+				Vector3 goToPos = action.getGoToPosition();
+				if (moveSpeed > 0) {
+				float seconds = moveSpeed / debugSpeedUpCast;
+					float elapsedTime = 0;
+					Vector3 startingPos = transform.position;
+					while (elapsedTime < seconds) {
+						transform.position = Vector3.Lerp(startingPos, goToPos, (elapsedTime / seconds));
+						faceDirectionOfTravel(goToPos - startingPos);
+						elapsedTime += Time.deltaTime;
+						yield return new WaitForEndOfFrame();
+					}
+				}
+				transform.position = goToPos;
+				faceDirection(action.getFacingDirection());
+				// end of move to position
+
 				// delay time until cast
 				//Debug.Log("delay time for action " + action.castDelay);
 				yield return new WaitForSeconds(action.castDelay / debugSpeedUpCast);
 
 				// casting time
-				faceDirection(action.getFacingDirection());
 				EventManager.alertBossActionCasting(action);
 				yield return new WaitForSeconds(action.castTime);
 
@@ -156,6 +180,15 @@ public class Boss : MonoBehaviour {
 				StopCoroutine(playActions());
 			}
 		}
+	}
+
+	private void faceDirectionOfTravel(Vector3 direction) {
+		direction = direction.normalized;
+		float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+		// smooth turn
+		float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref aiTurnSmoothVelocity, aiTurnSmoothTime);
+		transform.rotation = Quaternion.Euler(0f, angle, 0f);
 	}
 
 
