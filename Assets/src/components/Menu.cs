@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour {
 	private LevelModelLoader levelLoader;
 	private StrategyModelLoader strategyLoader;
 
-	private LevelConfig levelConfig = new LevelConfig();
+	private LevelConfig levelConfig;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -43,13 +43,29 @@ public class Menu : MonoBehaviour {
 	/// update on start, reread the new values into the config
 	/// </summary>
 	private void updateLevelConfig() {
+		levelConfig = new LevelConfig();
 		TMPDropdown[] ddList = level_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd = ddList[0];
 		levelConfig.levelName = dd.options[dd.value].text;
 
 		TMPDropdown[] ddList1 = strategy_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd1 = ddList1[0];
-		levelConfig.strategyName = dd1.options[dd1.value].text;
+		string strategyName = dd1.options[dd1.value].text;
+		levelConfig.strategyName = strategyName;
+		levelConfig.strategy = strategyLoader.getStrategyByStrategyName(strategyName);
+
+		/*
+		Debug.Log("Strategy waymarker count: " + levelConfig.strategy.waymakers.Count);
+		levelConfig.strategy.waymakers.ForEach(wm => {
+			Debug.Log(wm[0] + "," + wm[1] + "," + wm[2]);
+		});*/
+
+		// debug strategy
+		//if(levelConfig.strategy == null) {
+		//	Debug.LogWarning("strategy was null for " + strategyName);
+		//} else {
+		//	Debug.LogWarning("Strategy found");
+		//}
 
 		TMPDropdown[] ddList2 = checkpoint_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd2 = ddList2[0];
@@ -58,6 +74,9 @@ public class Menu : MonoBehaviour {
 		TMPDropdown[] ddList3 = classType_dd.GetComponents<TMPDropdown>();
 		TMPDropdown dd3 = ddList3[0];
 		levelConfig.playerClassTypeName = dd3.options[dd3.value].text;
+
+		// send off to the master manager
+		GameManager.Instance.levelConfig = levelConfig;
 	}
 
 	/// <summary>
@@ -133,7 +152,7 @@ public class Menu : MonoBehaviour {
 			Debug.Log("updatePlaystyleDropdown failed, dd null");
 		}
 	}
-
+	
 	/// <summary>
 	/// Strategy available reflects the selected level
 	/// </summary>
@@ -150,7 +169,6 @@ public class Menu : MonoBehaviour {
 					if (strategyLoader != null) {
 						List<string> strategies = strategyLoader.getStrategyNamesByLevel(selectedLevel.name);
 						addToDropDown(dd, strategies);
-
 					} else {
 						Debug.Log("UpdateStrategyDropdowns failed, strategyLoader null");
 					}
@@ -228,6 +246,10 @@ public class Menu : MonoBehaviour {
 
 		// todo main player id hack
 		//GameManager.Instance.mainPlayerId = 1;
+		Invoke("goToLevel", 1);
+	}
+
+	private void goToLevel() {
 		SceneManager.LoadScene(1);
 	}
 }

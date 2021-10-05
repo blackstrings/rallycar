@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
 	public int mainPlayerId;
 	public LevelModel selectedLevel = new LevelModel();
+	public LevelConfig levelConfig;
 	public ActionQueueLoader actionLoader;
 
 

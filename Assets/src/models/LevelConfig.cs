@@ -12,4 +12,6 @@ public class LevelConfig
     public string strategyName;
     public string playerClassTypeName;
     public int playerId;
+
+    public StrategyModel strategy;
 }

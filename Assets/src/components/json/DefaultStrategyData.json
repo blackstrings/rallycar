@@ -1,0 +1,79 @@
+﻿{
+    "strategies": [
+        {
+            "levelName": "E9S",
+            "strategyName": "JP1",
+            "classTypes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ],
+            "waymakers": [
+                [ -15, 0, 0 ],
+                [ 0, 0, 15 ],
+                [ 15, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ -15, 0, 15 ],
+                [ 15, 0, 15 ],
+                [ -15, 0, -15 ],
+                [ 15, 0, -15 ]
+            ]
+        },
+        {
+            "levelName": "E9S",
+            "strategyName": "Happy",
+            "classTypes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ],
+            "waymakers": [
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ]
+            ]
+        },
+        {
+            "levelName": "E10S",
+            "strategyName": "Yeng Strategy",
+            "classTypes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ],
+            "waymakers": [
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ]
+            ]
+        },
+        {
+            "levelName": "E11S",
+            "strategyName": "Nhia Strategy",
+            "classTypes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ],
+            "waymakers": [
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ]
+            ]
+        },
+        {
+            "levelName": "E12S",
+            "strategyName": "Xai Strategy",
+            "classTypes": [ "healer", "healer", "tank", "tank", "dps", "dps", "dps", "dps" ],
+            "waymakers": [
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ],
+                [ 0, 0, 0 ]
+            ]
+        }
+    ]
+}

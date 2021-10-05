@@ -21,6 +21,19 @@ public class StrategyModelLoader {
 	//	return strategies;
 	//}
 
+	public StrategyModel getStrategyByStrategyName(string strategyName) {
+		StrategyModel found = null;
+		bool isFound = false;
+		strategies.ForEach(strategy => {
+			// Debug.Log(strategy.strategyName + " : " + strategyName);
+			if (strategy.strategyName.Equals(strategyName)) {
+				found = strategy;
+				isFound = true;
+			}
+		});
+		return found;
+	}
+
 	public List<string> getStrategyNamesByLevel(string level) {
 		List<string> stratNames = new List<string>();
 		if (strategies != null && strategies.Count > 0) {
