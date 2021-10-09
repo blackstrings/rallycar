@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
 	public int mainPlayerId;
-	public LevelModel selectedLevel = new LevelModel();
 	public LevelConfig levelConfig;
+
+	// todo get rid of these properties
+	public LevelModel selectedLevel = new LevelModel();
 	public ActionQueueLoader actionLoader;
 
 

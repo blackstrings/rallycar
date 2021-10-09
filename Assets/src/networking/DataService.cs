@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class DataService : MonoBehaviour {
 
+	
 	private LevelModelLoader levelLoader;
 	private ActionQueueLoader actionLoader;
 	private StrategyModelLoader strategyLoader;
@@ -162,6 +163,12 @@ public class DataService : MonoBehaviour {
 
 		www.downloadHandler = new DownloadHandlerBuffer();
 		return www;
+	}
+
+	private void DeserializeMasterJsonData(string json) {
+		if(json != null && json.Length > 0) {
+
+		}
 	}
 
 	private void DeserializeBossE9SData(string gameDataJson) {
